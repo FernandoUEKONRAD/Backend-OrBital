@@ -15,15 +15,33 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public IActionResult Login([FromBody] LoginRequest request)
     {
-        var user = _context.Usuarios
-            .FirstOrDefault(u => u.Username == request.Username 
-                              && u.Password == request.Password);
-
-        if (user == null)
+        if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Password))
         {
-            return Unauthorized(new { message = "Usuario o contraseña incorrectos" });
+            return BadRequest(new { message = "Datos incompletos" });
         }
 
-        return Ok(new { message = "Login exitoso", userId = user.Id });
+        try
+        {
+            var user = _context.Usuarios
+                .FirstOrDefault(u => u.Username == request.Username 
+                                  && u.Password == request.Password); // Nota: Usa contraseñas hash en producción.
+
+            if (user == null)
+            {
+                return Unauthorized(new { message = "Credenciales inválidas" });
+            }
+
+            return Ok(new 
+            { 
+                message = "Login exitoso", 
+                userId = user.Id,
+                username = user.Username
+            });
+        }
+        catch (Exception ex)
+        {
+            // Loguea el error (lo guarda en logs)
+            return StatusCode(500, new { message = "Ocurrió un error en el servidor" });
+        }
     }
 }
