@@ -11,5 +11,6 @@ namespace Orbital.API.Data
         }
 
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Planeta> Planetas { get; set; }
     }
 }

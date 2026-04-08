@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Orbital.API.Data;
+using Orbital.API.Repositories;
+using Orbital.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,12 @@ builder.Services.AddCors(options =>
                         .AllowAnyMethod()
                         .AllowAnyHeader());
 });
+
+// Inyección de dependencias - Repositorios
+builder.Services.AddScoped<IPlanetasRepository, PlanetasRepository>();
+
+// Inyección de dependencias - Servicios
+builder.Services.AddScoped<IPlanetasService, PlanetasService>();
 
 // Servicios
 builder.Services.AddControllers();
