@@ -1,47 +1,37 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
+using Orbital.API.DTOs;
+using Orbital.API.Services;
 
-[ApiController]
-[Route("api/[controller]")]
-public class AuthController : ControllerBase
+namespace Orbital.API.Controllers
 {
-    private readonly AppDbContext _context;
-
-    public AuthController(AppDbContext context)
+    [ApiController]
+    [Route("api/auth")]
+    public class AuthController : ControllerBase
     {
-        _context = context;
-    }
+        private readonly IAuthService _service;
 
-    [HttpPost("login")]
-    public IActionResult Login([FromBody] LoginRequest request)
-    {
-        if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Password))
+        public AuthController(IAuthService service)
         {
-            return BadRequest(new { message = "Datos incompletos" });
+            _service = service;
         }
 
-        try
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(UsuarioLoginDto dto)
         {
-            var user = _context.Usuarios
-                .FirstOrDefault(u => u.Username == request.Username 
-                                  && u.Password == request.Password); // Nota: Usa contraseñas hash en producción.
+            var result = await _service.Login(dto);
 
-            if (user == null)
-            {
-                return Unauthorized(new { message = "Credenciales inválidas" });
-            }
+            if (result == null)
+                return Unauthorized();
 
-            return Ok(new 
-            { 
-                message = "Login exitoso", 
-                userId = user.Id,
-                username = user.Username
-            });
+            return Ok(result);
         }
-        catch (Exception ex)
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register(UsuarioCreateDto dto)
         {
-            // Loguea el error (lo guarda en logs)
-            return StatusCode(500, new { message = "Ocurrió un error en el servidor" });
+            var result = await _service.Register(dto);
+
+            return Ok(result);
         }
     }
 }
