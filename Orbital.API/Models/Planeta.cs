@@ -1,17 +1,19 @@
-public class Planeta
+namespace Orbital.API.Models
 {
-    public int Id_Planeta { get; set; }
-    public string Nombre { get; set; }
-    public string? Sistema_Estelar { get; set; }
-    public string? Galaxia { get; set; }
-    public int Nivel_Tecnologico { get; set; }
-    public string? Atmosfera { get; set; }
-    public long? Poblacion { get; set; }
-    public string Nivel_Vida_Nativa { get; set; }
-    public int Id_Estado { get; set; }
-    public int? Id_Propietario { get; set; }
-    public DateTime Fecha_Descubrimiento { get; set; }
-    public string? Coordenadas { get; set; }
-    public string? Descripcion { get; set; }
-    public bool Activo { get; set; }
+    public class Planeta
+    {
+        public int Id { get; set; }
+        public required string Nombre { get; set; }
+        public required string Descripcion { get; set; }
+        public double Diametro { get; set; }
+        public required string Tipo { get; set; } // Terrestre, Gaseoso, etc
+        public double DistanciaAlSol { get; set; } // en millones de km
+        public int TiempoOrbita { get; set; } // en días
+        public bool TieneAtmosfera { get; set; }
+        public int NumeroLunas { get; set; }
+        public bool Habitable { get; set; }
+        public string Estado { get; set; } = "Activo"; // Activo, Inactivo, etc
+        public DateTime FechaRegistro { get; set; } = DateTime.UtcNow;
+        public DateTime? FechaActualizacion { get; set; }
+    }
 }

@@ -16,7 +16,7 @@ namespace Orbital.API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] UsuarioLoginDto dto)
+        public async Task<IActionResult> Login(UsuarioLoginDto dto)
         {
             var result = await _service.Login(dto);
 
@@ -27,7 +27,7 @@ namespace Orbital.API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] UsuarioCreateDto dto)
+        public async Task<IActionResult> Register(UsuarioCreateDto dto)
         {
             var result = await _service.Register(dto);
 

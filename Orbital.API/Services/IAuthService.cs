@@ -1,7 +1,12 @@
 using Orbital.API.DTOs;
+using Orbital.API.Models;
 
-public interface IAuthService
+namespace Orbital.API.Services
 {
-    Task<object?> Login(UsuarioLoginDto dto);
-    Task<object> Register(UsuarioCreateDto dto);
+    public interface IAuthService
+    {
+        Task<string> Login(UsuarioLoginDto dto);
+
+        Task<Usuario> Register(UsuarioCreateDto dto);
+    }
 }

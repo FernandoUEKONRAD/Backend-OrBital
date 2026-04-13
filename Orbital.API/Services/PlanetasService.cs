@@ -22,109 +22,167 @@ namespace Orbital.API.Services
             _repository = repository;
         }
 
-        // ---------------- CREATE ----------------
         public async Task<PlanetaResponseDto> CrearPlaneta(PlanetaCreateDto dto)
         {
-            if (string.IsNullOrWhiteSpace(dto.Nombre))
-                throw new ArgumentException("El nombre es obligatorio");
-
-            var planeta = new Planeta
+            try
             {
-                Nombre = dto.Nombre.Trim(),
-                Sistema_Estelar = dto.Sistema_Estelar,
-                Galaxia = dto.Galaxia,
-                Nivel_Tecnologico = dto.Nivel_Tecnologico,
-                Atmosfera = dto.Atmosfera,
-                Poblacion = dto.Poblacion ?? 0,
-                Nivel_Vida_Nativa = dto.Nivel_Vida_Nativa ?? "Bajo",
-                Id_Estado = dto.Id_Estado,
-                Id_Propietario = dto.Id_Propietario,
-                Fecha_Descubrimiento = DateTime.SpecifyKind(dto.Fecha_Descubrimiento, DateTimeKind.Utc),
-                Coordenadas = string.IsNullOrWhiteSpace(dto.Coordenadas) ? null : dto.Coordenadas,
-                Descripcion = dto.Descripcion,
-                Activo = true
-            };
+                // Validar datos obligatorios
+                if (string.IsNullOrWhiteSpace(dto.Nombre))
+                    throw new ArgumentException("El nombre del planeta es obligatorio");
 
-            var creado = await _repository.CrearPlaneta(planeta);
-            return Mapear(creado);
+                if (string.IsNullOrWhiteSpace(dto.Descripcion))
+                    throw new ArgumentException("La descripción del planeta es obligatoria");
+
+                if (string.IsNullOrWhiteSpace(dto.Tipo))
+                    throw new ArgumentException("El tipo de planeta es obligatorio");
+
+                if (dto.Diametro <= 0)
+                    throw new ArgumentException("El diámetro debe ser mayor a 0");
+
+                if (dto.DistanciaAlSol <= 0)
+                    throw new ArgumentException("La distancia al sol debe ser mayor a 0");
+
+                if (dto.TiempoOrbita <= 0)
+                    throw new ArgumentException("El tiempo de órbita debe ser mayor a 0");
+
+                // Crear planeta con valores por defecto
+                var planeta = new Planeta
+                {
+                    Nombre = dto.Nombre.Trim(),
+                    Descripcion = dto.Descripcion.Trim(),
+                    Diametro = dto.Diametro,
+                    Tipo = dto.Tipo.Trim(),
+                    DistanciaAlSol = dto.DistanciaAlSol,
+                    TiempoOrbita = dto.TiempoOrbita,
+                    TieneAtmosfera = dto.TieneAtmosfera,
+                    NumeroLunas = dto.NumeroLunas,
+                    Habitable = dto.Habitable,
+                    Estado = "Activo", // Estado por defecto
+                    FechaRegistro = DateTime.UtcNow
+                };
+
+                var planetaCreado = await _repository.CrearPlaneta(planeta);
+                return MapearAResponseDto(planetaCreado);
+            }
+            catch (ArgumentException ex)
+            {
+                throw new Exception($"Error de validación: {ex.Message}", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al crear el planeta", ex);
+            }
         }
 
-        // ---------------- GET ALL ----------------
         public async Task<List<PlanetaResponseDto>> ObtenerTodosPlanetas()
         {
-            var lista = await _repository.ObtenerTodosPlanetas();
-            return lista.Select(Mapear).ToList();
+            try
+            {
+                var planetas = await _repository.ObtenerTodosPlanetas();
+                return planetas.Select(MapearAResponseDto).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener los planetas", ex);
+            }
         }
 
-        // ---------------- GET BY ID ----------------
         public async Task<PlanetaResponseDto> ObtenerPlanetaPorId(int id)
         {
-            if (id <= 0)
-                throw new ArgumentException("ID inválido");
+            try
+            {
+                if (id <= 0)
+                    throw new ArgumentException("El ID debe ser mayor a 0");
 
-            var planeta = await _repository.ObtenerPlanetaPorId(id);
-            return Mapear(planeta);
+                var planeta = await _repository.ObtenerPlanetaPorId(id);
+                return MapearAResponseDto(planeta);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al obtener el planeta con ID {id}", ex);
+            }
         }
 
-        // ---------------- UPDATE ----------------
         public async Task<PlanetaResponseDto> ActualizarPlaneta(int id, PlanetaUpdateDto dto)
         {
-            if (id <= 0)
-                throw new ArgumentException("ID inválido");
-
-            var actual = await _repository.ObtenerPlanetaPorId(id);
-
-            var actualizado = new Planeta
+            try
             {
-                Id_Planeta = actual.Id_Planeta,
+                if (id <= 0)
+                    throw new ArgumentException("El ID debe ser mayor a 0");
 
-                Nombre = dto.Nombre ?? actual.Nombre,
-                Sistema_Estelar = dto.Sistema_Estelar ?? actual.Sistema_Estelar,
-                Galaxia = dto.Galaxia ?? actual.Galaxia,
-                Nivel_Tecnologico = dto.Nivel_Tecnologico ?? actual.Nivel_Tecnologico,
-                Atmosfera = dto.Atmosfera ?? actual.Atmosfera,
-                Poblacion = dto.Poblacion ?? actual.Poblacion,
-                Nivel_Vida_Nativa = dto.Nivel_Vida_Nativa ?? actual.Nivel_Vida_Nativa,
-                Id_Estado = dto.Id_Estado ?? actual.Id_Estado,
-                Id_Propietario = dto.Id_Propietario ?? actual.Id_Propietario,
-                Fecha_Descubrimiento = dto.Fecha_Descubrimiento ?? actual.Fecha_Descubrimiento,
-                Coordenadas = dto.Coordenadas ?? actual.Coordenadas,
-                Descripcion = dto.Descripcion ?? actual.Descripcion,
-                Activo = dto.Activo ?? actual.Activo
-            };
+                // Validar que al menos un campo sea actualizado
+                if (dto == null || (string.IsNullOrEmpty(dto.Nombre) && 
+                    dto.Diametro == null && 
+                    string.IsNullOrEmpty(dto.Tipo) &&
+                    string.IsNullOrEmpty(dto.Estado)))
+                {
+                    throw new ArgumentException("Debe proporcionar al menos un campo para actualizar");
+                }
 
-            var result = await _repository.ActualizarPlaneta(id, actualizado);
-            return Mapear(result);
+                // Obtener planeta actual
+                var planetaActual = await _repository.ObtenerPlanetaPorId(id);
+
+                // Crear objeto de actualización
+                var planetaActualizado = new Planeta
+                {
+                    Id = planetaActual.Id,
+                    Nombre = string.IsNullOrWhiteSpace(dto.Nombre) ? planetaActual.Nombre : dto.Nombre.Trim(),
+                    Descripcion = string.IsNullOrWhiteSpace(dto.Descripcion) ? planetaActual.Descripcion : dto.Descripcion.Trim(),
+                    Diametro = dto.Diametro ?? planetaActual.Diametro,
+                    Tipo = string.IsNullOrWhiteSpace(dto.Tipo) ? planetaActual.Tipo : dto.Tipo.Trim(),
+                    DistanciaAlSol = dto.DistanciaAlSol ?? planetaActual.DistanciaAlSol,
+                    TiempoOrbita = dto.TiempoOrbita ?? planetaActual.TiempoOrbita,
+                    TieneAtmosfera = dto.TieneAtmosfera ?? planetaActual.TieneAtmosfera,
+                    NumeroLunas = dto.NumeroLunas ?? planetaActual.NumeroLunas,
+                    Habitable = dto.Habitable ?? planetaActual.Habitable,
+                    Estado = string.IsNullOrWhiteSpace(dto.Estado) ? planetaActual.Estado : dto.Estado.Trim(),
+                    FechaRegistro = planetaActual.FechaRegistro,
+                    FechaActualizacion = DateTime.UtcNow
+                };
+
+                var planetaActualizadoEnBd = await _repository.ActualizarPlaneta(id, planetaActualizado);
+                return MapearAResponseDto(planetaActualizadoEnBd);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al actualizar el planeta con ID {id}", ex);
+            }
         }
 
-        // ---------------- DELETE ----------------
         public async Task<bool> EliminarPlaneta(int id)
         {
-            if (id <= 0)
-                throw new ArgumentException("ID inválido");
+            try
+            {
+                if (id <= 0)
+                    throw new ArgumentException("El ID debe ser mayor a 0");
 
-            return await _repository.EliminarPlaneta(id);
+                // Verificar que el planeta existe antes de eliminar
+                await _repository.ObtenerPlanetaPorId(id);
+                return await _repository.EliminarPlaneta(id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al eliminar el planeta con ID {id}", ex);
+            }
         }
 
-        // ---------------- MAPPER ----------------
-        private PlanetaResponseDto Mapear(Planeta p)
+        private PlanetaResponseDto MapearAResponseDto(Planeta planeta)
         {
             return new PlanetaResponseDto
             {
-                Id_Planeta = p.Id_Planeta,
-                Nombre = p.Nombre,
-                Sistema_Estelar = p.Sistema_Estelar,
-                Galaxia = p.Galaxia,
-                Nivel_Tecnologico = p.Nivel_Tecnologico,
-                Atmosfera = p.Atmosfera,
-                Poblacion = p.Poblacion,
-                Nivel_Vida_Nativa = p.Nivel_Vida_Nativa,
-                Id_Estado = p.Id_Estado,
-                Id_Propietario = p.Id_Propietario,
-                Fecha_Descubrimiento = p.Fecha_Descubrimiento,
-                Coordenadas = p.Coordenadas,
-                Descripcion = p.Descripcion,
-                Activo = p.Activo
+                Id = planeta.Id,
+                Nombre = planeta.Nombre,
+                Descripcion = planeta.Descripcion,
+                Diametro = planeta.Diametro,
+                Tipo = planeta.Tipo,
+                DistanciaAlSol = planeta.DistanciaAlSol,
+                TiempoOrbita = planeta.TiempoOrbita,
+                TieneAtmosfera = planeta.TieneAtmosfera,
+                NumeroLunas = planeta.NumeroLunas,
+                Habitable = planeta.Habitable,
+                Estado = planeta.Estado,
+                FechaRegistro = planeta.FechaRegistro,
+                FechaActualizacion = planeta.FechaActualizacion
             };
         }
     }

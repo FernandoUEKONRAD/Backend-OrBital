@@ -24,64 +24,97 @@ namespace Orbital.API.Repositories
 
         public async Task<Planeta> CrearPlaneta(Planeta planeta)
         {
-            _context.Planetas.Add(planeta);
-            await _context.SaveChangesAsync();
-            return planeta;
+            try
+            {
+                _context.Planetas.Add(planeta);
+                await _context.SaveChangesAsync();
+                return planeta;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al crear el planeta en la base de datos", ex);
+            }
         }
 
         public async Task<List<Planeta>> ObtenerTodosPlanetas()
         {
-            return await _context.Planetas.ToListAsync();
+            try
+            {
+                return await _context.Planetas.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener los planetas", ex);
+            }
         }
 
         public async Task<Planeta> ObtenerPlanetaPorId(int id)
         {
-            var planeta = await _context.Planetas
-                .FirstOrDefaultAsync(p => p.Id_Planeta == id);
-
-            if (planeta == null)
-                throw new Exception("Planeta no encontrado");
-
-            return planeta;
+            try
+            {
+                var planeta = await _context.Planetas.FirstOrDefaultAsync(p => p.Id == id);
+                if (planeta == null)
+                {
+                    throw new Exception($"Planeta con ID {id} no encontrado");
+                }
+                return planeta;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al obtener el planeta con ID {id}", ex);
+            }
         }
 
-        public async Task<Planeta> ActualizarPlaneta(int id, Planeta input)
+        public async Task<Planeta> ActualizarPlaneta(int id, Planeta planetaActualizado)
         {
-            var planeta = await _context.Planetas
-                .FirstOrDefaultAsync(p => p.Id_Planeta == id);
+            try
+            {
+                var planeta = await _context.Planetas.FirstOrDefaultAsync(p => p.Id == id);
+                if (planeta == null)
+                {
+                    throw new Exception($"Planeta con ID {id} no encontrado");
+                }
 
-            if (planeta == null)
-                throw new Exception("Planeta no encontrado");
+                planeta.Nombre = planetaActualizado.Nombre ?? planeta.Nombre;
+                planeta.Descripcion = planetaActualizado.Descripcion ?? planeta.Descripcion;
+                planeta.Diametro = planetaActualizado.Diametro > 0 ? planetaActualizado.Diametro : planeta.Diametro;
+                planeta.Tipo = planetaActualizado.Tipo ?? planeta.Tipo;
+                planeta.DistanciaAlSol = planetaActualizado.DistanciaAlSol > 0 ? planetaActualizado.DistanciaAlSol : planeta.DistanciaAlSol;
+                planeta.TiempoOrbita = planetaActualizado.TiempoOrbita > 0 ? planetaActualizado.TiempoOrbita : planeta.TiempoOrbita;
+                planeta.TieneAtmosfera = planetaActualizado.TieneAtmosfera;
+                planeta.NumeroLunas = planetaActualizado.NumeroLunas >= 0 ? planetaActualizado.NumeroLunas : planeta.NumeroLunas;
+                planeta.Habitable = planetaActualizado.Habitable;
+                planeta.Estado = planetaActualizado.Estado ?? planeta.Estado;
+                planeta.FechaActualizacion = DateTime.UtcNow;
 
-            planeta.Nombre = input.Nombre;
-            planeta.Sistema_Estelar = input.Sistema_Estelar;
-            planeta.Galaxia = input.Galaxia;
-            planeta.Nivel_Tecnologico = input.Nivel_Tecnologico;
-            planeta.Atmosfera = input.Atmosfera;
-            planeta.Poblacion = input.Poblacion;
-            planeta.Nivel_Vida_Nativa = input.Nivel_Vida_Nativa;
-            planeta.Id_Estado = input.Id_Estado;
-            planeta.Id_Propietario = input.Id_Propietario;
-            planeta.Fecha_Descubrimiento = input.Fecha_Descubrimiento;
-            planeta.Coordenadas = input.Coordenadas;
-            planeta.Descripcion = input.Descripcion;
-            planeta.Activo = input.Activo;
-
-            await _context.SaveChangesAsync();
-            return planeta;
+                _context.Planetas.Update(planeta);
+                await _context.SaveChangesAsync();
+                return planeta;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al actualizar el planeta con ID {id}", ex);
+            }
         }
 
         public async Task<bool> EliminarPlaneta(int id)
         {
-            var planeta = await _context.Planetas
-                .FirstOrDefaultAsync(p => p.Id_Planeta == id);
+            try
+            {
+                var planeta = await _context.Planetas.FirstOrDefaultAsync(p => p.Id == id);
+                if (planeta == null)
+                {
+                    return false;
+                }
 
-            if (planeta == null)
-                return false;
-
-            _context.Planetas.Remove(planeta);
-            await _context.SaveChangesAsync();
-            return true;
+                _context.Planetas.Remove(planeta);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al eliminar el planeta con ID {id}", ex);
+            }
         }
     }
 }
