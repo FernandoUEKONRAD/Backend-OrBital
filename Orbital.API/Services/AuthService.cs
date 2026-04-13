@@ -1,59 +1,62 @@
+using Microsoft.EntityFrameworkCore;
+using Orbital.API.Data;
 using Orbital.API.DTOs;
 using Orbital.API.Models;
-using Orbital.API.Repositories;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace Orbital.API.Services
 {
     public class AuthService : IAuthService
     {
-        private readonly IUsuarioRepository _repo;
+        private readonly AppDbContext _context;
 
-        public AuthService(IUsuarioRepository repo)
+        public AuthService(AppDbContext context)
         {
-            _repo = repo;
+            _context = context;
         }
 
-        public async Task<string> Login(UsuarioLoginDto dto)
+        public async Task<object?> Login(UsuarioLoginDto dto)
         {
-            var usuario = await _repo.GetByEmail(dto.Correo);
+            var usuario = await _context.Usuarios
+                .FirstOrDefaultAsync(u =>
+                    u.Correo == dto.Correo &&
+                    u.Contrasena_Hash == dto.Password &&
+                    u.Activo == true);
 
             if (usuario == null)
                 return null;
 
-            var hash = HashPassword(dto.Password);
-
-            if (usuario.Contrasena_Hash != hash)
-                return null;
-
-            return "Login correcto";
+            return new
+            {
+                usuario.Id_Usuario,
+                usuario.Nombre,
+                usuario.Correo,
+                usuario.Id_Rol
+            };
         }
 
-        public async Task<Usuario> Register(UsuarioCreateDto dto)
+        // 🔥 AQUÍ VA TU CÓDIGO DE REGISTRO
+        public async Task<object> Register(UsuarioCreateDto dto)
         {
             var usuario = new Usuario
             {
                 Nombre = dto.Nombre,
                 Correo = dto.Correo,
-                Contrasena_Hash = HashPassword(dto.Password),
+                Contrasena_Hash = dto.Password, // ✔ aquí va la conversión
                 Id_Rol = dto.Id_Rol,
                 Id_Jerarquia = dto.Id_Jerarquia,
                 Activo = true,
                 Fecha_Registro = DateTime.Now
             };
 
-            await _repo.Add(usuario);
+            _context.Usuarios.Add(usuario);
+            await _context.SaveChangesAsync();
 
-            return usuario;
-        }
-
-        private string HashPassword(string password)
-        {
-            using var sha = SHA256.Create();
-            var bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(password));
-
-            return Convert.ToBase64String(bytes);
+            return new
+            {
+                usuario.Id_Usuario,
+                usuario.Nombre,
+                usuario.Correo
+            };
         }
     }
 }

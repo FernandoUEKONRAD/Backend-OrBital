@@ -17,41 +17,47 @@ namespace Orbital.API.Controllers
             _logger = logger;
         }
 
-        /// <summary>
-        /// Obtiene todos los planetas registrados
-        /// </summary>
+        // =========================
+        // GET ALL
+        // =========================
         [HttpGet]
         public async Task<IActionResult> ObtenerTodosPlanetas()
         {
             try
             {
                 var planetas = await _service.ObtenerTodosPlanetas();
+
                 return Ok(new
                 {
                     message = "Planetas obtenidos exitosamente",
-                    cantidad = planetas.Count,
                     data = planetas
                 });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al obtener todos los planetas");
-                return StatusCode(500, new { message = "Ocurrió un error al obtener los planetas" });
+                _logger.LogError(ex, "Error al obtener planetas");
+
+                return StatusCode(500, new
+                {
+                    message = "Error interno al obtener planetas",
+                    error = ex.Message
+                });
             }
         }
 
-        /// <summary>
-        /// Obtiene un planeta por su ID
-        /// </summary>
+        // =========================
+        // GET BY ID
+        // =========================
         [HttpGet("{id}")]
         public async Task<IActionResult> ObtenerPlanetaPorId(int id)
         {
             try
             {
-                if (id <= 0)
-                    return BadRequest(new { message = "El ID del planeta debe ser mayor a 0" });
-
                 var planeta = await _service.ObtenerPlanetaPorId(id);
+
+                if (planeta == null)
+                    return NotFound(new { message = "Planeta no encontrado" });
+
                 return Ok(new
                 {
                     message = "Planeta obtenido exitosamente",
@@ -60,98 +66,102 @@ namespace Orbital.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al obtener planeta por ID: {IdPlaneta}", id);
-                return StatusCode(500, new { message = "Ocurrió un error al obtener el planeta" });
+                _logger.LogError(ex, "Error al obtener planeta {Id}", id);
+
+                return StatusCode(500, new
+                {
+                    message = "Error interno al obtener planeta",
+                    error = ex.Message
+                });
             }
         }
 
-        /// <summary>
-        /// Crea un nuevo planeta
-        /// </summary>
+        // =========================
+        // CREATE
+        // =========================
         [HttpPost]
         public async Task<IActionResult> CrearPlaneta([FromBody] PlanetaCreateDto dto)
         {
             try
             {
-                if (!ModelState.IsValid)
-                    return BadRequest(new { message = "Datos incompletos o inválidos", errors = ModelState });
-
                 var planetaCreado = await _service.CrearPlaneta(dto);
-                return CreatedAtAction(nameof(ObtenerPlanetaPorId), 
-                    new { id = planetaCreado.Id }, 
+
+                return CreatedAtAction(
+                    nameof(ObtenerPlanetaPorId),
+                    new { id = planetaCreado.Id_Planeta },
                     new
                     {
                         message = "Planeta creado exitosamente",
                         data = planetaCreado
                     });
             }
-            catch (ArgumentException ex)
-            {
-                _logger.LogWarning(ex, "Validación fallida al crear planeta");
-                return BadRequest(new { message = ex.Message });
-            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error al crear planeta");
-                return StatusCode(500, new { message = "Ocurrió un error al crear el planeta" });
+
+                return StatusCode(500, new
+                {
+                    message = "Error interno al crear planeta",
+                    error = ex.Message
+                });
             }
         }
 
-        /// <summary>
-        /// Actualiza un planeta existente
-        /// </summary>
+        // =========================
+        // UPDATE
+        // =========================
         [HttpPut("{id}")]
         public async Task<IActionResult> ActualizarPlaneta(int id, [FromBody] PlanetaUpdateDto dto)
         {
             try
             {
-                if (id <= 0)
-                    return BadRequest(new { message = "El ID del planeta debe ser mayor a 0" });
+                var actualizado = await _service.ActualizarPlaneta(id, dto);
 
-                if (!ModelState.IsValid)
-                    return BadRequest(new { message = "Datos inválidos", errors = ModelState });
-
-                var planetaActualizado = await _service.ActualizarPlaneta(id, dto);
                 return Ok(new
                 {
                     message = "Planeta actualizado exitosamente",
-                    data = planetaActualizado
+                    data = actualizado
                 });
-            }
-            catch (ArgumentException ex)
-            {
-                _logger.LogWarning(ex, "Validación fallida al actualizar planeta ID: {IdPlaneta}", id);
-                return BadRequest(new { message = ex.Message });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al actualizar planeta ID: {IdPlaneta}", id);
-                return StatusCode(500, new { message = "Ocurrió un error al actualizar el planeta" });
+                _logger.LogError(ex, "Error al actualizar planeta {Id}", id);
+
+                return StatusCode(500, new
+                {
+                    message = "Error interno al actualizar planeta",
+                    error = ex.Message
+                });
             }
         }
 
-        /// <summary>
-        /// Elimina un planeta
-        /// </summary>
+        // =========================
+        // DELETE
+        // =========================
         [HttpDelete("{id}")]
         public async Task<IActionResult> EliminarPlaneta(int id)
         {
             try
             {
-                if (id <= 0)
-                    return BadRequest(new { message = "El ID del planeta debe ser mayor a 0" });
+                var eliminado = await _service.EliminarPlaneta(id);
 
-                var resultado = await _service.EliminarPlaneta(id);
-                
-                if (!resultado)
+                if (!eliminado)
                     return NotFound(new { message = "Planeta no encontrado" });
 
-                return Ok(new { message = "Planeta eliminado exitosamente" });
+                return Ok(new
+                {
+                    message = "Planeta eliminado exitosamente"
+                });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al eliminar planeta ID: {IdPlaneta}", id);
-                return StatusCode(500, new { message = "Ocurrió un error al eliminar el planeta" });
+                _logger.LogError(ex, "Error al eliminar planeta {Id}", id);
+
+                return StatusCode(500, new
+                {
+                    message = "Error interno al eliminar planeta",
+                    error = ex.Message
+                });
             }
         }
     }
