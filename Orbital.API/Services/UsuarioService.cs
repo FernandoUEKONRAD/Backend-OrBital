@@ -24,7 +24,7 @@ namespace Orbital.API.Services
                     Nombre = x.Nombre,
                     Correo = x.Correo,
                     Rol = x.Rol.Nombre_Rol,
-                    Jerarquia = x.Jerarquia.Nombre_Jerarquia,
+                    Jerarquia = x.Jerarquia.Nombre,
                     Activo = x.Activo
                 })
                 .ToListAsync();

@@ -273,18 +273,6 @@ C:\Users\dania\Downloads\Proyecto orbital Backend\Backend-OrBital\Orbital.API\ob
 C:\Users\dania\Downloads\Proyecto orbital Backend\Backend-OrBital\Orbital.API\obj\Debug\net10.0\Orbital.API.pdb
 C:\Users\dania\Downloads\Proyecto orbital Backend\Backend-OrBital\Orbital.API\obj\Debug\net10.0\Orbital.API.genruntimeconfig.cache
 C:\Users\dania\Downloads\Proyecto orbital Backend\Backend-OrBital\Orbital.API\obj\Debug\net10.0\ref\Orbital.API.dll
-C:\Users\User\OneDrive\Documentos\Backend-OrBital\Orbital.API\obj\Debug\net10.0\Orbital.API.csproj.AssemblyReference.cache
-C:\Users\User\OneDrive\Documentos\Backend-OrBital\Orbital.API\obj\Debug\net10.0\rpswa.dswa.cache.json
-C:\Users\User\OneDrive\Documentos\Backend-OrBital\Orbital.API\obj\Debug\net10.0\Orbital.API.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\User\OneDrive\Documentos\Backend-OrBital\Orbital.API\obj\Debug\net10.0\Orbital.API.AssemblyInfoInputs.cache
-C:\Users\User\OneDrive\Documentos\Backend-OrBital\Orbital.API\obj\Debug\net10.0\Orbital.API.AssemblyInfo.cs
-C:\Users\User\OneDrive\Documentos\Backend-OrBital\Orbital.API\obj\Debug\net10.0\Orbital.API.csproj.CoreCompileInputs.cache
-C:\Users\User\OneDrive\Documentos\Backend-OrBital\Orbital.API\obj\Debug\net10.0\Orbital.API.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\User\OneDrive\Documentos\Backend-OrBital\Orbital.API\obj\Debug\net10.0\Orbital.API.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\User\OneDrive\Documentos\Backend-OrBital\Orbital.API\obj\Debug\net10.0\Orbital.API.sourcelink.json
-C:\Users\User\OneDrive\Documentos\Backend-OrBital\Orbital.API\obj\Debug\net10.0\Orbital.API.dll
-C:\Users\User\OneDrive\Documentos\Backend-OrBital\Orbital.API\obj\Debug\net10.0\refint\Orbital.API.dll
-C:\Users\User\OneDrive\Documentos\Backend-OrBital\Orbital.API\obj\Debug\net10.0\Orbital.API.pdb
 D:\Users\Usuario\Documents\Backend-OrBital\Orbital.API\obj\Debug\net10.0\Orbital.API.csproj.AssemblyReference.cache
 D:\Users\Usuario\Documents\Backend-OrBital\Orbital.API\obj\Debug\net10.0\rpswa.dswa.cache.json
 D:\Users\Usuario\Documents\Backend-OrBital\Orbital.API\obj\Debug\net10.0\Orbital.API.GeneratedMSBuildEditorConfig.editorconfig
@@ -445,3 +433,12 @@ D:\Users\Usuario\Documents\Backend-OrBital\Orbital.API\obj\Debug\net10.0\swae.bu
 D:\Users\Usuario\Documents\Backend-OrBital\Orbital.API\obj\Debug\net10.0\Orbital..79DC4F26.Up2Date
 D:\Users\Usuario\Documents\Backend-OrBital\Orbital.API\obj\Debug\net10.0\Orbital.API.genruntimeconfig.cache
 D:\Users\Usuario\Documents\Backend-OrBital\Orbital.API\obj\Debug\net10.0\ref\Orbital.API.dll
+C:\Users\User\OneDrive\Documentos\Backend-OrBital\Orbital.API\obj\Debug\net10.0\Orbital.API.csproj.AssemblyReference.cache
+C:\Users\User\OneDrive\Documentos\Backend-OrBital\Orbital.API\obj\Debug\net10.0\rpswa.dswa.cache.json
+C:\Users\User\OneDrive\Documentos\Backend-OrBital\Orbital.API\obj\Debug\net10.0\Orbital.API.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\OneDrive\Documentos\Backend-OrBital\Orbital.API\obj\Debug\net10.0\Orbital.API.AssemblyInfoInputs.cache
+C:\Users\User\OneDrive\Documentos\Backend-OrBital\Orbital.API\obj\Debug\net10.0\Orbital.API.AssemblyInfo.cs
+C:\Users\User\OneDrive\Documentos\Backend-OrBital\Orbital.API\obj\Debug\net10.0\Orbital.API.csproj.CoreCompileInputs.cache
+C:\Users\User\OneDrive\Documentos\Backend-OrBital\Orbital.API\obj\Debug\net10.0\Orbital.API.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\User\OneDrive\Documentos\Backend-OrBital\Orbital.API\obj\Debug\net10.0\Orbital.API.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\User\OneDrive\Documentos\Backend-OrBital\Orbital.API\obj\Debug\net10.0\Orbital.API.sourcelink.json
