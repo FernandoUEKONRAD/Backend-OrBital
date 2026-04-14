@@ -1,37 +1,94 @@
-namespace Orbital.API.Services;
+using Orbital.API.DTOs;
+using Orbital.API.Models;
+using Orbital.API.Repositories;
 
-public class PlanetaEstadoService
+namespace Orbital.API.Services
 {
-    // Flujo válido entre estados — exactamente los de tu BD
-    private static readonly Dictionary<string, List<string>> _cambiosPermitidos = new()
+    public class PlanetaEstadoService
     {
-        { "Disponible",     new() { "En Exploracion", "Restringido" } },
-        { "En Exploracion", new() { "En Mision", "Disponible", "Restringido" } },
-        { "En Mision",      new() { "Conquistado", "Disponible" } },
-        { "Conquistado",    new() { "En Venta", "Restringido" } },
-        { "En Venta",       new() { "Vendido", "Conquistado" } },
-        { "Vendido",        new() { } },
-        { "Restringido",    new() { "Disponible" } }
-    };
+        private readonly IPlanetaEstadoRepository _repository;
 
-    public bool CambioEsValido(string estadoActual, string estadoNuevo)
-    {
-        if (!_cambiosPermitidos.ContainsKey(estadoActual))
-            return false;
+        public PlanetaEstadoService(IPlanetaEstadoRepository repository)
+        {
+            _repository = repository;
+        }
 
-        return _cambiosPermitidos[estadoActual].Contains(estadoNuevo);
-    }
+        public async Task<IEnumerable<PlanetaEstadoResponseDto>> ObtenerEstados()
+        {
+            var estados = await _repository.ObtenerEstados();
 
-    public List<string> ObtenerSiguientesEstados(string estadoActual)
-    {
-        if (!_cambiosPermitidos.ContainsKey(estadoActual))
-            return new List<string>();
+            return estados.Select(e => new PlanetaEstadoResponseDto
+            {
+                Id_Estado = e.Id_Estado,
+                Nombre = e.Nombre,
+                Descripcion = e.Descripcion,
+                Activo = e.Activo
+            });
+        }
 
-        return _cambiosPermitidos[estadoActual];
-    }
+        public async Task<PlanetaEstadoResponseDto> ObtenerEstadoPorId(int id)
+        {
+            var estado = await _repository.ObtenerEstadoPorId(id);
 
-    public List<string> ObtenerTodosLosEstados()
-    {
-        return _cambiosPermitidos.Keys.ToList();
+            if (estado == null)
+                throw new Exception("Estado no encontrado");
+
+            return new PlanetaEstadoResponseDto
+            {
+                Id_Estado = estado.Id_Estado,
+                Nombre = estado.Nombre,
+                Descripcion = estado.Descripcion,
+                Activo = estado.Activo
+            };
+        }
+
+        public async Task<PlanetaEstadoResponseDto> CrearEstado(PlanetaEstadoCreateDto dto)
+        {
+            var estado = new PlanetaEstado
+            {
+                Nombre = dto.Nombre,
+                Descripcion = dto.Descripcion,
+                Activo = dto.Activo
+            };
+
+            var creado = await _repository.CrearEstado(estado);
+
+            return new PlanetaEstadoResponseDto
+            {
+                Id_Estado = creado.Id_Estado,
+                Nombre = creado.Nombre,
+                Descripcion = creado.Descripcion,
+                Activo = creado.Activo
+            };
+        }
+
+        public async Task<PlanetaEstadoResponseDto> ActualizarEstado(int id, PlanetaEstadoUpdateDto dto)
+        {
+            var estado = await _repository.ObtenerEstadoPorId(id);
+
+            if (estado == null)
+                throw new Exception("Estado no encontrado");
+
+            estado.Nombre = dto.Nombre ?? estado.Nombre;
+            estado.Descripcion = dto.Descripcion ?? estado.Descripcion;
+
+            if (dto.Activo.HasValue)
+                estado.Activo = dto.Activo.Value;
+
+            var actualizado = await _repository.ActualizarEstado(estado);
+
+            return new PlanetaEstadoResponseDto
+            {
+                Id_Estado = actualizado.Id_Estado,
+                Nombre = actualizado.Nombre,
+                Descripcion = actualizado.Descripcion,
+                Activo = actualizado.Activo
+            };
+        }
+
+        public async Task<bool> EliminarEstado(int id)
+        {
+            return await _repository.EliminarEstado(id);
+        }
     }
 }

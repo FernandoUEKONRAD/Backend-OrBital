@@ -17,15 +17,15 @@ namespace Orbital.API.Services
 
         public async Task<string> Login(UsuarioLoginDto dto)
         {
-            var usuario = await _repo.GetByEmail(dto.Correo);
+            var usuario = await _repo.ObtenerPorEmail(dto.Correo);
 
             if (usuario == null)
-                return null;
+                return "Usuario no encontrado";
 
             var hash = HashPassword(dto.Password);
 
             if (usuario.Contrasena_Hash != hash)
-                return null;
+                return "Password incorrecta";
 
             return "Login correcto";
         }
@@ -43,7 +43,7 @@ namespace Orbital.API.Services
                 Fecha_Registro = DateTime.Now
             };
 
-            await _repo.Add(usuario);
+            await _repo.Crear(usuario);
 
             return usuario;
         }

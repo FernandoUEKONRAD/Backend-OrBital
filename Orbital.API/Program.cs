@@ -31,7 +31,7 @@ builder.Services.AddCors(options =>
 // Inyección de dependencias - Repositorios
 builder.Services.AddScoped<IPlanetasRepository, PlanetasRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-builder.Services.AddScoped<UsuarioRepository>();
+builder.Services.AddScoped<IPlanetaEstadoRepository, PlanetaEstadoRepository>();
 
 // Inyección de dependencias - Servicios
 builder.Services.AddScoped<IPlanetasService, PlanetasService>();

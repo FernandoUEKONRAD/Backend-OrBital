@@ -4,10 +4,10 @@ namespace Orbital.API.Repositories
 {
     public interface IUsuarioRepository
     {
-        Task<Usuario> GetByEmail(string email);
-
-        Task Add(Usuario usuario);
-
-        Task<List<Usuario>> GetAll();
+        Task<Usuario> Crear(Usuario usuario);
+        Task<Usuario?> ObtenerPorEmail(string email);
+        Task<List<Usuario>> ObtenerTodos();
+        Task<Usuario?> ObtenerPorId(Guid id);
+        Task Actualizar(Usuario usuario);
     }
 }

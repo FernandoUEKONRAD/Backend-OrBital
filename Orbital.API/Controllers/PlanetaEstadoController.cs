@@ -1,115 +1,76 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Orbital.API.Data;
 using Orbital.API.DTOs;
 using Orbital.API.Services;
 
-namespace Orbital.API.Controllers;
-
-[ApiController]
-[Route("api/planetas/{id}/estado")]
-public class PlanetaEstadoController : ControllerBase
+namespace Orbital.API.Controllers
 {
-    private readonly AppDbContext _db;
-    private readonly PlanetaEstadoService _estadoService;
-    private readonly ILogger<PlanetaEstadoController> _logger;
-
-    public PlanetaEstadoController(
-        AppDbContext db,
-        PlanetaEstadoService estadoService,
-        ILogger<PlanetaEstadoController> logger)
+    [ApiController]
+    [Route("api/[controller]")]
+    public class PlanetaEstadoController : ControllerBase
     {
-        _db = db;
-        _estadoService = estadoService;
-        _logger = logger;
-    }
+        private readonly PlanetaEstadoService _service;
 
-    [HttpGet]
-    public async Task<IActionResult> ObtenerEstado(int id)
-    {
-        try
+        public PlanetaEstadoController(PlanetaEstadoService service)
         {
-            var planeta = await _db.Planetas
-                .FirstOrDefaultAsync(p => p.Id == id);
-
-            if (planeta == null)
-                return NotFound(new { message = "Planeta no encontrado" });
-
-
-            var estadoActual = planeta.Estado ?? "Disponible";
-            var siguientes = _estadoService.ObtenerSiguientesEstados(estadoActual);
-
-            return Ok(new
-            {
-                planetaId = planeta.Id,
-                nombre = planeta.Nombre,
-                estadoActual,
-                siguientesEstadosPermitidos = siguientes
-            });
+            _service = service;
         }
-        catch (Exception ex)
+
+        // =========================
+        // GET ALL
+        // =========================
+        [HttpGet]
+        public async Task<IActionResult> Get()
         {
-            _logger.LogError(ex, "Error al obtener estado ID: {id}", id);
-            return StatusCode(500, new { message = "Error al obtener estado" });
+            var estados = await _service.ObtenerEstados();
+            return Ok(estados);
         }
-    }
 
-    [HttpPut]
-    public async Task<IActionResult> CambiarEstado(int id, [FromBody] CambiarEstadoDto dto)
-    {
-        try
+        // =========================
+        // GET BY ID
+        // =========================
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
-            if (string.IsNullOrEmpty(dto.NuevoEstado))
-                return BadRequest(new { message = "El nuevo estado es requerido" });
+            var estado = await _service.ObtenerEstadoPorId(id);
 
-            var planeta = await _db.Planetas
-                .FirstOrDefaultAsync(p => p.Id == id);
+            if (estado == null)
+                return NotFound("Estado no encontrado");
 
-            if (planeta == null)
-                return NotFound(new { message = "Planeta no encontrado" });
-
-            var estadoActual = planeta.Estado ?? "Disponible";
-
-            // Validar que el estado nuevo existe en la BD
-            var estadoNuevoExiste = await _db.EstadosPlaneta
-                .AnyAsync(e => e.NombreEstado == dto.NuevoEstado);
-
-            if (!estadoNuevoExiste)
-                return BadRequest(new
-                {
-                    message = $"'{dto.NuevoEstado}' no es un estado válido",
-                    estadosValidos = _estadoService.ObtenerTodosLosEstados()
-                });
-
-            // Validar flujo
-            if (!_estadoService.CambioEsValido(estadoActual, dto.NuevoEstado))
-                return BadRequest(new
-                {
-                    message = $"No se puede cambiar de '{estadoActual}' a '{dto.NuevoEstado}'",
-                    siguientesPermitidos = _estadoService.ObtenerSiguientesEstados(estadoActual)
-                });
-
-            // Guardar
-            string anterior = estadoActual;
-            planeta.Estado = dto.NuevoEstado;
-            await _db.SaveChangesAsync();
-
-            return Ok(new
-            {
-                message = "Estado actualizado correctamente",
-                data = new
-                {
-                    planetaId = planeta.Id,
-                    nombre = planeta.Nombre,
-                    estadoAnterior = anterior,
-                    estadoNuevo = planeta.Estado
-                }
-            });
+            return Ok(estado);
         }
-        catch (Exception ex)
+
+        // =========================
+        // CREATE
+        // =========================
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] PlanetaEstadoCreateDto dto)
         {
-            _logger.LogError(ex, "Error al cambiar estado ID: {id}", id);
-            return StatusCode(500, new { message = "Error al cambiar estado" });
+            var creado = await _service.CrearEstado(dto);
+            return Ok(creado);
+        }
+
+        // =========================
+        // UPDATE
+        // =========================
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] PlanetaEstadoUpdateDto dto)
+        {
+            var actualizado = await _service.ActualizarEstado(id, dto);
+            return Ok(actualizado);
+        }
+
+        // =========================
+        // DELETE
+        // =========================
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var eliminado = await _service.EliminarEstado(id);
+
+            if (!eliminado)
+                return NotFound("Estado no encontrado");
+
+            return Ok("Estado eliminado correctamente");
         }
     }
 }
