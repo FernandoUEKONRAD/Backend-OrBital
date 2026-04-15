@@ -7,7 +7,7 @@ namespace Orbital.API.Models
         [Key]
         public int Id_Jerarquia { get; set; }
 
-        public string Nombre { get; set; }
+        public string Nombre { get; set; } = string.Empty;
 
         public bool Activo { get; set; }
     }

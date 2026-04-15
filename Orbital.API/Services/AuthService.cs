@@ -17,7 +17,7 @@ namespace Orbital.API.Services
 
         public async Task<string> Login(UsuarioLoginDto dto)
         {
-            var usuario = await _repo.ObtenerPorEmail(dto.Correo);
+            var usuario = await _repo.ObtenerPorEmail(dto.Correo.ToLower());
 
             if (usuario == null)
                 return "Usuario no encontrado";

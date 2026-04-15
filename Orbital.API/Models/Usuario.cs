@@ -4,11 +4,11 @@ namespace Orbital.API.Models
     {
         public int Id_Usuario { get; set; }
 
-        public string Nombre { get; set; }
+        public string Nombre { get; set; } = string.Empty;
 
-        public string Correo { get; set; }
+        public string Correo { get; set; } = string.Empty;
 
-        public string Contrasena_Hash { get; set; }
+        public string Contrasena_Hash { get; set; } = string.Empty;
 
         public int Id_Rol { get; set; }
 

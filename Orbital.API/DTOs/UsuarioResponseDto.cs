@@ -4,13 +4,13 @@ namespace Orbital.API.DTOs
     {
         public int Id_Usuario { get; set; }
 
-        public string Nombre { get; set; }
+        public string Nombre { get; set; } = string.Empty;
 
-        public string Correo { get; set; }
+        public string Correo { get; set; } = string.Empty;
 
-        public string Rol { get; set; }
+        public string Rol { get; set; } = string.Empty;
 
-        public string Jerarquia { get; set; }
+        public string Jerarquia { get; set; } = string.Empty;
 
         public bool Activo { get; set; }
     }

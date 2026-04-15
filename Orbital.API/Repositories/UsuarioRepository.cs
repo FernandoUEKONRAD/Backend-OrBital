@@ -24,7 +24,7 @@ namespace Orbital.API.Repositories
         {
             return await _context.Usuarios
                 .Include(x => x.Rol)
-                .FirstOrDefaultAsync(x => x.Correo == email);
+                .FirstOrDefaultAsync(x => x.Correo.ToLower() == email.ToLower());
         }
 
         public async Task<List<Usuario>> ObtenerTodos()
@@ -32,7 +32,7 @@ namespace Orbital.API.Repositories
             return await _context.Usuarios.ToListAsync();
         }
 
-        public async Task<Usuario?> ObtenerPorId(Guid id)
+        public async Task<Usuario?> ObtenerPorId(int id)
         {
             return await _context.Usuarios.FindAsync(id);
         }

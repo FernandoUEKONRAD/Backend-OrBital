@@ -7,7 +7,7 @@ namespace Orbital.API.Repositories
         Task<Usuario> Crear(Usuario usuario);
         Task<Usuario?> ObtenerPorEmail(string email);
         Task<List<Usuario>> ObtenerTodos();
-        Task<Usuario?> ObtenerPorId(Guid id);
+        Task<Usuario?> ObtenerPorId(int id);
         Task Actualizar(Usuario usuario);
     }
 }
