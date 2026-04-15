@@ -21,8 +21,7 @@ namespace Orbital.API.Services
             {
                 Id_Estado = e.Id_Estado,
                 Nombre = e.Nombre,
-                Descripcion = e.Descripcion,
-                Activo = e.Activo
+                Descripcion = e.Descripcion
             });
         }
 
@@ -37,8 +36,7 @@ namespace Orbital.API.Services
             {
                 Id_Estado = estado.Id_Estado,
                 Nombre = estado.Nombre,
-                Descripcion = estado.Descripcion,
-                Activo = estado.Activo
+                Descripcion = estado.Descripcion
             };
         }
 
@@ -47,8 +45,7 @@ namespace Orbital.API.Services
             var estado = new PlanetaEstado
             {
                 Nombre = dto.Nombre,
-                Descripcion = dto.Descripcion,
-                Activo = dto.Activo
+                Descripcion = dto.Descripcion
             };
 
             var creado = await _repository.CrearEstado(estado);
@@ -57,8 +54,7 @@ namespace Orbital.API.Services
             {
                 Id_Estado = creado.Id_Estado,
                 Nombre = creado.Nombre,
-                Descripcion = creado.Descripcion,
-                Activo = creado.Activo
+                Descripcion = creado.Descripcion
             };
         }
 
@@ -72,17 +68,13 @@ namespace Orbital.API.Services
             estado.Nombre = dto.Nombre ?? estado.Nombre;
             estado.Descripcion = dto.Descripcion ?? estado.Descripcion;
 
-            if (dto.Activo.HasValue)
-                estado.Activo = dto.Activo.Value;
-
             var actualizado = await _repository.ActualizarEstado(estado);
 
             return new PlanetaEstadoResponseDto
             {
                 Id_Estado = actualizado.Id_Estado,
                 Nombre = actualizado.Nombre,
-                Descripcion = actualizado.Descripcion,
-                Activo = actualizado.Activo
+                Descripcion = actualizado.Descripcion
             };
         }
 

@@ -30,7 +30,7 @@ namespace Orbital.API.Data
             modelBuilder.Entity<Rol>().ToTable("rol");
             modelBuilder.Entity<Jerarquia>().ToTable("jerarquia");
             modelBuilder.Entity<Planeta>().ToTable("planeta");
-            modelBuilder.Entity<PlanetaEstado>().ToTable("planeta_estado");
+            modelBuilder.Entity<PlanetaEstado>().ToTable("estado_planeta");
 
             // =========================
             // PRIMARY KEYS
