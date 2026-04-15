@@ -35,7 +35,7 @@ namespace Orbital.API.Services
             var usuario = new Usuario
             {
                 Nombre = dto.Nombre,
-                Correo = dto.Correo,
+                Correo = dto.Correo.ToLower(), // 🔥 IMPORTANTE
                 Contrasena_Hash = HashPassword(dto.Password),
                 Id_Rol = dto.Id_Rol,
                 Id_Jerarquia = dto.Id_Jerarquia,

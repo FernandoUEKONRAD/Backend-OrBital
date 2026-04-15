@@ -29,9 +29,8 @@ namespace Orbital.API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(UsuarioCreateDto dto)
         {
-            var result = await _service.Register(dto);
-
-            return Ok(result);
+            var usuario = await _service.Register(dto);
+            return Ok(usuario);
         }
     }
 }
