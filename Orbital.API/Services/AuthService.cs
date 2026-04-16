@@ -15,19 +15,27 @@ namespace Orbital.API.Services
             _repo = repo;
         }
 
-        public async Task<string> Login(UsuarioLoginDto dto)
+        public async Task<UsuarioResponseDto> Login(UsuarioLoginDto dto)
         {
             var usuario = await _repo.ObtenerPorEmail(dto.Correo.ToLower());
 
             if (usuario == null)
-                return "Usuario no encontrado";
+                return null;
 
             var hash = HashPassword(dto.Password);
 
             if (usuario.Contrasena_Hash != hash)
-                return "Password incorrecta";
+                return null;
 
-            return "Login correcto";
+            return new UsuarioResponseDto
+            {
+                Id_Usuario = usuario.Id_Usuario,
+                Nombre = usuario.Nombre,
+                Correo = usuario.Correo,
+                Rol = usuario.Rol.Nombre_Rol,
+                Jerarquia = usuario.Id_Jerarquia.ToString(),
+                Activo = usuario.Activo
+            };
         }
 
         public async Task<Usuario> Register(UsuarioCreateDto dto)

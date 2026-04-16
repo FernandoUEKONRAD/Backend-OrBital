@@ -20,7 +20,7 @@ namespace Orbital.API.Controllers
         {
             var result = await _service.Login(dto);
 
-            if (result != "Login correcto")
+            if (result == null)
                 return Unauthorized(result);
 
             return Ok(result);
