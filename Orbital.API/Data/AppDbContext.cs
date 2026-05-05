@@ -70,6 +70,26 @@ namespace Orbital.API.Data
                 .WithMany()
                 .HasForeignKey(p => p.Id_Estado)
                 .OnDelete(DeleteBehavior.Restrict);
+
+
+            // =========================
+            // RESTRICCIONES Y CONVERSIONES
+            // =========================
+
+            modelBuilder.Entity<Usuario>()
+                .HasIndex(u => u.Correo)
+                .IsUnique();
+
+            modelBuilder.Entity<Usuario>()
+                .Property(u => u.Correo)
+                .HasConversion(
+                    v => v.Trim().ToLower(),
+                    v => v
+                );
+
+            modelBuilder.Entity<Planeta>()
+                .Property(p => p.Nivel_Tecnologico)
+                .HasConversion<byte>();
         }
     }
 }
