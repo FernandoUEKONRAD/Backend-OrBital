@@ -8,7 +8,7 @@ namespace Orbital.API.DTOs
         public string? Sistema_Estelar { get; set; }
         public string? Galaxia { get; set; }
 
-        public int Nivel_Tecnologico { get; set; }
+        public NivelTecnologico Nivel_Tecnologico { get; set; }
         public string? Atmosfera { get; set; }
         public long? Poblacion { get; set; }
 
