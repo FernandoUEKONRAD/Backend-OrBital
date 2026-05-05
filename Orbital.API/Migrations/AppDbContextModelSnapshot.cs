@@ -22,78 +22,204 @@ namespace Orbital.API.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
-            modelBuilder.Entity("Orbital.API.Models.Planeta", b =>
+            modelBuilder.Entity("Orbital.API.Models.Jerarquia", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("Id_Jerarquia")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id_Jerarquia"));
 
-                    b.Property<string>("Descripcion")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<double>("Diametro")
-                        .HasColumnType("double");
-
-                    b.Property<double>("DistanciaAlSol")
-                        .HasColumnType("double");
-
-                    b.Property<string>("Estado")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime?>("FechaActualizacion")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("FechaRegistro")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<bool>("Habitable")
+                    b.Property<bool>("Activo")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("NumeroLunas")
+                    b.HasKey("Id_Jerarquia");
+
+                    b.ToTable("jerarquia", (string)null);
+                });
+
+            modelBuilder.Entity("Orbital.API.Models.Planeta", b =>
+                {
+                    b.Property<int>("Id_Planeta")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("TiempoOrbita")
-                        .HasColumnType("int");
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id_Planeta"));
 
-                    b.Property<bool>("TieneAtmosfera")
+                    b.Property<bool>("Activo")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<string>("Tipo")
+                    b.Property<string>("Atmosfera")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Coordenadas")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Descripcion")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("Fecha_Descubrimiento")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Galaxia")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Id_Estado")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Id_Propietario")
+                        .HasColumnType("int");
+
+                    b.Property<byte>("Nivel_Tecnologico")
+                        .HasColumnType("tinyint unsigned");
+
+                    b.Property<string>("Nivel_Vida_Nativa")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.HasKey("Id");
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
-                    b.ToTable("Planetas");
+                    b.Property<long?>("Poblacion")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Sistema_Estelar")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id_Planeta");
+
+                    b.HasIndex("Id_Estado");
+
+                    b.ToTable("planeta", (string)null);
+                });
+
+            modelBuilder.Entity("Orbital.API.Models.PlanetaEstado", b =>
+                {
+                    b.Property<int>("Id_Estado")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id_estado");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id_Estado"));
+
+                    b.Property<string>("Descripcion")
+                        .HasColumnType("longtext")
+                        .HasColumnName("descripcion");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("nombre_estado");
+
+                    b.HasKey("Id_Estado");
+
+                    b.ToTable("estado_planeta", (string)null);
+                });
+
+            modelBuilder.Entity("Orbital.API.Models.Rol", b =>
+                {
+                    b.Property<int>("Id_Rol")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id_Rol"));
+
+                    b.Property<bool>("Activo")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Nombre_Rol")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id_Rol");
+
+                    b.ToTable("rol", (string)null);
                 });
 
             modelBuilder.Entity("Orbital.API.Models.Usuario", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("Id_Usuario")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id_Usuario"));
 
-                    b.Property<string>("Password")
+                    b.Property<bool>("Activo")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Contrasena_Hash")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Username")
+                    b.Property<string>("Correo")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<DateTime>("Fecha_Registro")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("Id_Jerarquia")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Id_Rol")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.HasKey("Id");
+                    b.Property<DateTime?>("Ultimo_Acceso")
+                        .HasColumnType("datetime(6)");
 
-                    b.ToTable("Usuarios");
+                    b.HasKey("Id_Usuario");
+
+                    b.HasIndex("Correo")
+                        .IsUnique();
+
+                    b.HasIndex("Id_Jerarquia");
+
+                    b.HasIndex("Id_Rol");
+
+                    b.ToTable("usuario", (string)null);
+                });
+
+            modelBuilder.Entity("Orbital.API.Models.Planeta", b =>
+                {
+                    b.HasOne("Orbital.API.Models.PlanetaEstado", "Estado")
+                        .WithMany()
+                        .HasForeignKey("Id_Estado")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Estado");
+                });
+
+            modelBuilder.Entity("Orbital.API.Models.Usuario", b =>
+                {
+                    b.HasOne("Orbital.API.Models.Jerarquia", "Jerarquia")
+                        .WithMany()
+                        .HasForeignKey("Id_Jerarquia")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Orbital.API.Models.Rol", "Rol")
+                        .WithMany()
+                        .HasForeignKey("Id_Rol")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Jerarquia");
+
+                    b.Navigation("Rol");
                 });
 #pragma warning restore 612, 618
         }
