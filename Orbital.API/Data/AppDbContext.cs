@@ -105,6 +105,30 @@ namespace Orbital.API.Data
                 .HasForeignKey(rp => rp.Id_Planeta)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<PlanetaValoracion>()
+                .HasOne(pv => pv.Planeta)
+                .WithMany()
+                .HasForeignKey(pv => pv.Id_Planeta)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<PlanetaValoracion>()
+                .HasOne(pv => pv.Analista)
+                .WithMany()
+                .HasForeignKey(pv => pv.Id_Analista)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<PlanetaValoracion>()
+                .HasOne(pv => pv.AprobadoPor)
+                .WithMany()
+                .HasForeignKey(pv => pv.Aprobado_Por)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<RecursoPlanetario>()
+                .HasOne(rp => rp.Planeta)
+                .WithMany()
+                .HasForeignKey(rp => rp.Id_Planeta)
+                .OnDelete(DeleteBehavior.Restrict);
+
 
             // =========================
             // RESTRICCIONES Y CONVERSIONES
