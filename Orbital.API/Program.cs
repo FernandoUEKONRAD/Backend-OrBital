@@ -38,6 +38,7 @@ builder.Services.AddScoped<IPlanetasService, PlanetasService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<PlanetaEstadoService>();
+builder.Services.AddScoped<IValoracionService, ValoracionService>();
 
 
 // Servicios
