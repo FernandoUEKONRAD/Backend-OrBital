@@ -72,7 +72,32 @@ builder.Services.AddScoped<IValoracionService, ValoracionService>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options => {
+
+    options.AddPolicy("EmperadorOnly", policy =>
+    policy.RequireClaim("Id_Rol", RolesIds.Emperador));
+
+    options.AddPolicy("ComandanteOnly", policy =>
+        policy.RequireClaim("Id_Rol", RolesIds.Comandante));
+
+    options.AddPolicy("AnalistaOnly", policy =>
+        policy.RequireClaim("Id_Rol", RolesIds.Analista));
+
+    options.AddPolicy("DesarrolladorOnly", policy =>
+        policy.RequireClaim("Id_Rol", RolesIds.Desarrollador));
+
+    options.AddPolicy("EspecialistaOnly", policy =>
+        policy.RequireClaim("Id_Rol", RolesIds.Especialista));
+
+    options.AddPolicy("GestorOnly", policy =>
+        policy.RequireClaim("Id_Rol", RolesIds.Gestor));
+
+    options.AddPolicy("GuerreroConquistaOnly", policy =>
+        policy.RequireClaim("Id_Rol", RolesIds.GuerreroConquista));
+
+    options.AddPolicy("SistemaScouterOnly", policy =>
+        policy.RequireClaim("Id_Rol", RolesIds.SistemaScouter));
+});
 
 
 var app = builder.Build();
@@ -94,3 +119,18 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+
+// "mapeo" de los roles para las politicas de los tokens
+ 
+public static class RolesIds
+{
+    public const string Emperador = "1";
+    public const string Comandante = "2";
+    public const string Analista = "3";
+    public const string Desarrollador = "4";
+    public const string Especialista = "5";
+    public const string Gestor = "6";
+    public const string GuerreroConquista = "7";
+    public const string SistemaScouter = "8";
+}
