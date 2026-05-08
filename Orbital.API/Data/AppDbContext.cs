@@ -18,6 +18,8 @@ namespace Orbital.API.Data
         public DbSet<Jerarquia> Jerarquias { get; set; }
         public DbSet<Planeta> Planetas { get; set; }
         public DbSet<PlanetaEstado> PlanetaEstados { get; set; }
+        public DbSet<PlanetaValoracion> PlanetaValoraciones { get; set; }
+        public DbSet<RecursoPlanetario> RecursosPlanetarios { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -31,6 +33,8 @@ namespace Orbital.API.Data
             modelBuilder.Entity<Jerarquia>().ToTable("jerarquia");
             modelBuilder.Entity<Planeta>().ToTable("planeta");
             modelBuilder.Entity<PlanetaEstado>().ToTable("estado_planeta");
+            modelBuilder.Entity<PlanetaValoracion>().ToTable("planeta_valoracion");
+            modelBuilder.Entity<RecursoPlanetario>().ToTable("recurso_planetario");
 
             // =========================
             // PRIMARY KEYS
@@ -49,6 +53,12 @@ namespace Orbital.API.Data
 
             modelBuilder.Entity<PlanetaEstado>()
                 .HasKey(x => x.Id_Estado);
+
+            modelBuilder.Entity<PlanetaValoracion>()
+                .HasKey(x => x.Id_Valoracion);
+
+            modelBuilder.Entity<RecursoPlanetario>()
+                .HasKey(x => x.Id_Recurso);
 
             // =========================
             // RELACIONES
@@ -69,6 +79,54 @@ namespace Orbital.API.Data
                 .HasOne(p => p.Estado)
                 .WithMany()
                 .HasForeignKey(p => p.Id_Estado)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<PlanetaValoracion>()
+                .HasOne(pv => pv.Planeta)
+                .WithMany()
+                .HasForeignKey(pv => pv.Id_Planeta)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<PlanetaValoracion>()
+                .HasOne(pv => pv.Analista)
+                .WithMany()
+                .HasForeignKey(pv => pv.Id_Analista)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<PlanetaValoracion>()
+                .HasOne(pv => pv.AprobadoPor)
+                .WithMany()
+                .HasForeignKey(pv => pv.Aprobado_Por)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<RecursoPlanetario>()
+                .HasOne(rp => rp.Planeta)
+                .WithMany()
+                .HasForeignKey(rp => rp.Id_Planeta)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<PlanetaValoracion>()
+                .HasOne(pv => pv.Planeta)
+                .WithMany()
+                .HasForeignKey(pv => pv.Id_Planeta)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<PlanetaValoracion>()
+                .HasOne(pv => pv.Analista)
+                .WithMany()
+                .HasForeignKey(pv => pv.Id_Analista)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<PlanetaValoracion>()
+                .HasOne(pv => pv.AprobadoPor)
+                .WithMany()
+                .HasForeignKey(pv => pv.Aprobado_Por)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<RecursoPlanetario>()
+                .HasOne(rp => rp.Planeta)
+                .WithMany()
+                .HasForeignKey(rp => rp.Id_Planeta)
                 .OnDelete(DeleteBehavior.Restrict);
 
 
