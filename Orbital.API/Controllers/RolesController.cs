@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Orbital.API.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Orbital.API.Controllers
 {
@@ -15,6 +16,7 @@ namespace Orbital.API.Controllers
             _context = context;
         }
 
+        [Authorize(Policy = "EmperadorOnly")]
         [HttpGet]
         public async Task<IActionResult> GetRoles()
         {

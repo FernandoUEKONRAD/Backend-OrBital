@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Orbital.API.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Orbital.API.Controllers
 {
@@ -14,6 +15,7 @@ namespace Orbital.API.Controllers
             _service = service;
         }
 
+        [Authorize(Policy = "EmperadorOnly")]
         [HttpGet]
         public async Task<IActionResult> GetUsuarios()
         {

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Orbital.API.DTOs;
 using Orbital.API.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Orbital.API.Controllers
 {
@@ -22,6 +23,7 @@ namespace Orbital.API.Controllers
         // =========================
         // GET ALL
         // =========================
+        [Authorize(Policy = "EmperadorOnly")]
         [HttpGet]
         public async Task<IActionResult> ObtenerTodosPlanetas()
         {
@@ -50,6 +52,7 @@ namespace Orbital.API.Controllers
         // =========================
         // GET BY ID
         // =========================
+        [Authorize(Policy = "EmperadorOnly")]
         [HttpGet("{id}")]
         public async Task<IActionResult> ObtenerPlanetaPorId(int id)
         {
@@ -81,6 +84,7 @@ namespace Orbital.API.Controllers
         // =========================
         // CREATE
         // =========================
+        [Authorize(Policy = "EmperadorOnly")]
         [HttpPost]
         public async Task<IActionResult> CrearPlaneta([FromBody] PlanetaCreateDto dto)
         {
@@ -112,6 +116,7 @@ namespace Orbital.API.Controllers
         // =========================
         // UPDATE
         // =========================
+        [Authorize(Policy = "EmperadorOnly")]
         [HttpPut("{id}")]
         public async Task<IActionResult> ActualizarPlaneta(int id, [FromBody] PlanetaUpdateDto dto)
         {
@@ -140,6 +145,7 @@ namespace Orbital.API.Controllers
         // =========================
         // DELETE
         // =========================
+        [Authorize(Policy = "EmperadorOnly")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> EliminarPlaneta(int id)
         {
