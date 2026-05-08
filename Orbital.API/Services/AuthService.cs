@@ -79,7 +79,7 @@ namespace Orbital.API.Services
             {
         new Claim(JwtRegisteredClaimNames.Sub, usuario.Id_Usuario.ToString()),
         new Claim(JwtRegisteredClaimNames.Email, usuario.Correo),
-        new Claim(ClaimTypes.Role, usuario.Rol.Nombre_Rol)
+        new Claim(ClaimTypes.Role, usuario.Id_Rol.ToString())
     };
 
             var token = new JwtSecurityToken(
