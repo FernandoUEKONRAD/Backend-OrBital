@@ -3,19 +3,26 @@ using Orbital.API.Models;
 using Orbital.API.Repositories;
 using System.Security.Cryptography;
 using System.Text;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Configuration;
+
 
 namespace Orbital.API.Services
 {
     public class AuthService : IAuthService
     {
         private readonly IUsuarioRepository _repo;
+        private readonly IConfiguration _configuration;
 
-        public AuthService(IUsuarioRepository repo)
+        public AuthService(IUsuarioRepository repo, IConfiguration configuration)
         {
             _repo = repo;
+            _configuration = configuration;
         }
 
-        public async Task<UsuarioResponseDto> Login(UsuarioLoginDto dto)
+        public async Task<ResponseLoginDto> Login(UsuarioLoginDto dto)
         {
             var usuario = await _repo.ObtenerPorEmail(dto.Correo.ToLower());
 
@@ -27,14 +34,11 @@ namespace Orbital.API.Services
             if (usuario.Contrasena_Hash != hash)
                 return null;
 
-            return new UsuarioResponseDto
+            var Key = GenerateJwtToken(usuario);
+
+            return new ResponseLoginDto
             {
-                Id_Usuario = usuario.Id_Usuario,
-                Nombre = usuario.Nombre,
-                Correo = usuario.Correo,
-                Rol = usuario.Rol.Nombre_Rol,
-                Jerarquia = usuario.Id_Jerarquia.ToString(),
-                Activo = usuario.Activo
+                Token = Key
             };
         }
 
@@ -62,6 +66,31 @@ namespace Orbital.API.Services
             var bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(password));
 
             return Convert.ToBase64String(bytes);
+        }
+
+        private string GenerateJwtToken(Usuario usuario)
+        {
+            var jwtSettings = _configuration.GetSection("JwtSettings");
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]!));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var claims = new[]
+            {
+        new Claim(JwtRegisteredClaimNames.Sub, usuario.Id_Usuario.ToString()),
+        new Claim(JwtRegisteredClaimNames.Email, usuario.Correo),
+        new Claim(ClaimTypes.Role, usuario.Rol.Nombre_Rol)
+    };
+
+            var token = new JwtSecurityToken(
+                issuer: jwtSettings["Issuer"],
+                audience: jwtSettings["Audience"],
+                claims: claims,
+                expires: DateTime.UtcNow.AddHours(4),
+                signingCredentials: creds
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }
