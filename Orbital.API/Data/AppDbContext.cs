@@ -20,6 +20,8 @@ namespace Orbital.API.Data
         public DbSet<PlanetaEstado> PlanetaEstados { get; set; }
         public DbSet<PlanetaValoracion> PlanetaValoraciones { get; set; }
         public DbSet<RecursoPlanetario> RecursosPlanetarios { get; set; }
+        public DbSet<Galaxia> Galaxias { get; set; }
+        public DbSet<TipoAtmosfera> TiposAtmosfera { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -35,6 +37,8 @@ namespace Orbital.API.Data
             modelBuilder.Entity<PlanetaEstado>().ToTable("estado_planeta");
             modelBuilder.Entity<PlanetaValoracion>().ToTable("planeta_valoracion");
             modelBuilder.Entity<RecursoPlanetario>().ToTable("recurso_planetario");
+            modelBuilder.Entity<Galaxia>().ToTable("galaxia");
+            modelBuilder.Entity<TipoAtmosfera>().ToTable("tipo_atmosfera");
 
             // =========================
             // PRIMARY KEYS
@@ -59,6 +63,12 @@ namespace Orbital.API.Data
 
             modelBuilder.Entity<RecursoPlanetario>()
                 .HasKey(x => x.Id_Recurso);
+
+            modelBuilder.Entity<Galaxia>()
+                .HasKey(x => x.Id_Galaxia);
+
+            modelBuilder.Entity<TipoAtmosfera>()
+                .HasKey(x => x.Id_Atm);
 
             // =========================
             // RELACIONES
