@@ -1,3 +1,5 @@
+using Orbital.API.Models;
+
 namespace Orbital.API.DTOs
 {
     public class PlanetaUpdateDto

@@ -40,6 +40,26 @@ namespace Orbital.API.Data
             modelBuilder.Entity<Galaxia>().ToTable("galaxia");
             modelBuilder.Entity<TipoAtmosfera>().ToTable("tipo_atmosfera");
 
+            // Column mappings to match existing DB schema (snake_case names)
+            modelBuilder.Entity<TipoAtmosfera>(b =>
+            {
+                b.Property(p => p.Id_Atm).HasColumnName("id_atmosfera");
+                b.Property(p => p.Nombre).HasColumnName("nombre");
+                b.Property(p => p.Descripcion).HasColumnName("descripcion");
+                // DB script for tipo_atmosfera does not include an 'activo' column;
+                // ignore the Activo property to avoid querying a non-existing column.
+                b.Ignore(p => p.Activo);
+            });
+
+            modelBuilder.Entity<Galaxia>(b =>
+            {
+                b.Property(p => p.Id_Galaxia).HasColumnName("id_galaxia");
+                b.Property(p => p.Nombre).HasColumnName("nombre");
+                b.Property(p => p.Descripcion).HasColumnName("descripcion");
+                // The galaxia table in the provided script does not include 'activo'; ignore it.
+                b.Ignore(p => p.Activo);
+            });
+
             // =========================
             // PRIMARY KEYS
             // =========================

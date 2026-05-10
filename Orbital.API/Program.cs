@@ -57,6 +57,8 @@ builder.Services.AddCors(options =>
 
 // Inyección de dependencias - Repositorios
 builder.Services.AddScoped<IPlanetasRepository, PlanetasRepository>();
+builder.Services.AddScoped<IGalaxiaRepository, GalaxiaRepository>();
+builder.Services.AddScoped<ITipoAtmosferaRepository, TipoAtmosferaRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IPlanetaEstadoRepository, PlanetaEstadoRepository>();
 
@@ -66,6 +68,8 @@ builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<PlanetaEstadoService>();
 builder.Services.AddScoped<IValoracionService, ValoracionService>();
+builder.Services.AddScoped<GalaxiaService>();
+builder.Services.AddScoped<TipoAtmosferaService>();
 
 
 // Servicios

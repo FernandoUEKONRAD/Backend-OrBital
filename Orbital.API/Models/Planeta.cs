@@ -30,12 +30,12 @@ namespace Orbital.API.Models
         // =========================
         public PlanetaEstado? Estado { get; set; }
     }
-}
+    public enum NivelTecnologico: byte
+    {
+        Primitivo  = 1,
+        Medieval  = 2,
+        Avanzado  = 3,
+        Interestelar = 4
+    }
 
-public enum NivelTecnologico: byte
-{
-    Primitivo  = 1,
-    Medieval  = 2,
-    Avanzado  = 3,
-    Interestelar = 4
 }

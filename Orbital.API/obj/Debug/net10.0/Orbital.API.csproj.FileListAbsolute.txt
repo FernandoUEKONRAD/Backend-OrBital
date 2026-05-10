@@ -675,3 +675,4 @@ C:\Users\juan0\Documents\repositorios\konrad\Backend-OrBital\Orbital.API\obj\Deb
 C:\Users\juan0\Documents\repositorios\konrad\Backend-OrBital\Orbital.API\obj\Debug\net10.0\Orbital.API.pdb
 C:\Users\juan0\Documents\repositorios\konrad\Backend-OrBital\Orbital.API\obj\Debug\net10.0\Orbital.API.genruntimeconfig.cache
 C:\Users\juan0\Documents\repositorios\konrad\Backend-OrBital\Orbital.API\obj\Debug\net10.0\ref\Orbital.API.dll
+C:\Users\dania\Downloads\Proyecto orbital Backend\Backend-OrBital\Orbital.API\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

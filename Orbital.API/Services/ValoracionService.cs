@@ -63,7 +63,7 @@ namespace Orbital.API.Services
             var recursosScore = _calculador.CalcularRecursosScore(recursos);
             var poderScore = _calculador.CalcularPoderScore(planeta.Nivel_Vida_Nativa);
             var dificultadScore = _calculador.CalcularDificultadScore(poderScore);
-            var tecnologiaScore = _calculador.CalcularTecnologiaScore(planeta.Nivel_Tecnologico);
+            var tecnologiaScore = _calculador.CalcularTecnologiaScore((int)planeta.Nivel_Tecnologico);
             var ubicacionScore = _calculador.CalcularUbicacionScore();
             var riesgoScore = _calculador.CalcularRiesgoScore(false); // MVP: sin amenazas
 

@@ -1,0 +1,360 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|c:\\users\\dania\\downloads\\proyecto orbital backend\\backend-orbital\\orbital.api\\repositories\\galaxiarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|solutionrelative:orbital.api\\repositories\\galaxiarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|c:\\users\\dania\\downloads\\proyecto orbital backend\\backend-orbital\\orbital.api\\repositories\\tipoatmosferarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|solutionrelative:orbital.api\\repositories\\tipoatmosferarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|c:\\users\\dania\\downloads\\proyecto orbital backend\\backend-orbital\\orbital.api\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|solutionrelative:orbital.api\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\postman\\Orbital.API.postman_collection.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:postman\\Orbital.API.postman_collection.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|c:\\users\\dania\\downloads\\proyecto orbital backend\\backend-orbital\\orbital.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|solutionrelative:orbital.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|c:\\users\\dania\\downloads\\proyecto orbital backend\\backend-orbital\\orbital.api\\services\\valoracionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|solutionrelative:orbital.api\\services\\valoracionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|c:\\users\\dania\\downloads\\proyecto orbital backend\\backend-orbital\\orbital.api\\dtos\\planetaresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|solutionrelative:orbital.api\\dtos\\planetaresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|c:\\users\\dania\\downloads\\proyecto orbital backend\\backend-orbital\\orbital.api\\dtos\\planetacreatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|solutionrelative:orbital.api\\dtos\\planetacreatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|c:\\users\\dania\\downloads\\proyecto orbital backend\\backend-orbital\\orbital.api\\dtos\\planetaupdatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|solutionrelative:orbital.api\\dtos\\planetaupdatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|c:\\users\\dania\\downloads\\proyecto orbital backend\\backend-orbital\\orbital.api\\models\\planeta.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|solutionrelative:orbital.api\\models\\planeta.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|c:\\users\\dania\\downloads\\proyecto orbital backend\\backend-orbital\\orbital.api\\controllers\\catalogoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|solutionrelative:orbital.api\\controllers\\catalogoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|c:\\users\\dania\\downloads\\proyecto orbital backend\\backend-orbital\\orbital.api\\dtos\\simpleitemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|solutionrelative:orbital.api\\dtos\\simpleitemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|c:\\users\\dania\\downloads\\proyecto orbital backend\\backend-orbital\\orbital.api\\repositories\\igalaxiarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|solutionrelative:orbital.api\\repositories\\igalaxiarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|c:\\users\\dania\\downloads\\proyecto orbital backend\\backend-orbital\\orbital.api\\services\\tipoatmosferaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|solutionrelative:orbital.api\\services\\tipoatmosferaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|c:\\users\\dania\\downloads\\proyecto orbital backend\\backend-orbital\\orbital.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|solutionrelative:orbital.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|c:\\users\\dania\\downloads\\proyecto orbital backend\\backend-orbital\\orbital.api\\services\\galaxiaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|solutionrelative:orbital.api\\services\\galaxiaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|c:\\users\\dania\\downloads\\proyecto orbital backend\\backend-orbital\\orbital.api\\repositories\\itipoatmosferarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|solutionrelative:orbital.api\\repositories\\itipoatmosferarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|c:\\users\\dania\\downloads\\proyecto orbital backend\\backend-orbital\\orbital.api\\models\\tipoatmosfera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|solutionrelative:orbital.api\\models\\tipoatmosfera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|c:\\users\\dania\\downloads\\proyecto orbital backend\\backend-orbital\\orbital.api\\models\\galaxia.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|solutionrelative:orbital.api\\models\\galaxia.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|c:\\users\\dania\\downloads\\proyecto orbital backend\\backend-orbital\\orbital.api\\services\\calculadorvalorestrategico.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1642D94B-E600-169D-8717-4A738DA3FFD6}|Orbital.API\\Orbital.API.csproj|solutionrelative:orbital.api\\services\\calculadorvalorestrategico.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Orbital.API.postman_collection.json",
+              "DocumentMoniker": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\postman\\Orbital.API.postman_collection.json",
+              "RelativeDocumentMoniker": "postman\\Orbital.API.postman_collection.json",
+              "ToolTip": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\postman\\Orbital.API.postman_collection.json",
+              "RelativeToolTip": "postman\\Orbital.API.postman_collection.json",
+              "ViewState": "AgIAAE4AAAAAAAAAAAAAAH0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-05-09T23:12:22.492Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\Data\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "Orbital.API\\Data\\AppDbContext.cs",
+              "ToolTip": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\Data\\AppDbContext.cs",
+              "RelativeToolTip": "Orbital.API\\Data\\AppDbContext.cs",
+              "ViewState": "AgIAACYAAAAAAAAAAAAmwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T21:52:21.428Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "TipoAtmosferaRepository.cs",
+              "DocumentMoniker": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\Repositories\\TipoAtmosferaRepository.cs",
+              "RelativeDocumentMoniker": "Orbital.API\\Repositories\\TipoAtmosferaRepository.cs",
+              "ToolTip": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\Repositories\\TipoAtmosferaRepository.cs",
+              "RelativeToolTip": "Orbital.API\\Repositories\\TipoAtmosferaRepository.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAcwBUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T22:45:18.229Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "GalaxiaRepository.cs",
+              "DocumentMoniker": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\Repositories\\GalaxiaRepository.cs",
+              "RelativeDocumentMoniker": "Orbital.API\\Repositories\\GalaxiaRepository.cs",
+              "ToolTip": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\Repositories\\GalaxiaRepository.cs",
+              "RelativeToolTip": "Orbital.API\\Repositories\\GalaxiaRepository.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAcwBUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T22:45:12.733Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\appsettings.json",
+              "RelativeDocumentMoniker": "Orbital.API\\appsettings.json",
+              "ToolTip": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\appsettings.json",
+              "RelativeToolTip": "Orbital.API\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAABhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-05-09T22:56:33.394Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ValoracionService.cs",
+              "DocumentMoniker": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\Services\\ValoracionService.cs",
+              "RelativeDocumentMoniker": "Orbital.API\\Services\\ValoracionService.cs",
+              "ToolTip": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\Services\\ValoracionService.cs",
+              "RelativeToolTip": "Orbital.API\\Services\\ValoracionService.cs",
+              "ViewState": "AgIAAH8AAAAAAAAAAAAqwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T22:54:52.614Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "CalculadorValorEstrategico.cs",
+              "DocumentMoniker": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\Services\\CalculadorValorEstrategico.cs",
+              "RelativeDocumentMoniker": "Orbital.API\\Services\\CalculadorValorEstrategico.cs",
+              "ToolTip": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\Services\\CalculadorValorEstrategico.cs",
+              "RelativeToolTip": "Orbital.API\\Services\\CalculadorValorEstrategico.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T22:54:41.28Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "PlanetaResponseDto.cs",
+              "DocumentMoniker": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\DTOs\\PlanetaResponseDto.cs",
+              "RelativeDocumentMoniker": "Orbital.API\\DTOs\\PlanetaResponseDto.cs",
+              "ToolTip": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\DTOs\\PlanetaResponseDto.cs",
+              "RelativeToolTip": "Orbital.API\\DTOs\\PlanetaResponseDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T22:54:23.564Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "PlanetaCreateDto.cs",
+              "DocumentMoniker": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\DTOs\\PlanetaCreateDto.cs",
+              "RelativeDocumentMoniker": "Orbital.API\\DTOs\\PlanetaCreateDto.cs",
+              "ToolTip": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\DTOs\\PlanetaCreateDto.cs",
+              "RelativeToolTip": "Orbital.API\\DTOs\\PlanetaCreateDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T22:49:52.979Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "PlanetaUpdateDto.cs",
+              "DocumentMoniker": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\DTOs\\PlanetaUpdateDto.cs",
+              "RelativeDocumentMoniker": "Orbital.API\\DTOs\\PlanetaUpdateDto.cs",
+              "ToolTip": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\DTOs\\PlanetaUpdateDto.cs",
+              "RelativeToolTip": "Orbital.API\\DTOs\\PlanetaUpdateDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T22:49:50.405Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Planeta.cs",
+              "DocumentMoniker": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\Models\\Planeta.cs",
+              "RelativeDocumentMoniker": "Orbital.API\\Models\\Planeta.cs",
+              "ToolTip": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\Models\\Planeta.cs",
+              "RelativeToolTip": "Orbital.API\\Models\\Planeta.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T22:47:22.681Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "IGalaxiaRepository.cs",
+              "DocumentMoniker": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\Repositories\\IGalaxiaRepository.cs",
+              "RelativeDocumentMoniker": "Orbital.API\\Repositories\\IGalaxiaRepository.cs",
+              "ToolTip": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\Repositories\\IGalaxiaRepository.cs",
+              "RelativeToolTip": "Orbital.API\\Repositories\\IGalaxiaRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T22:45:15.146Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "SimpleItemDto.cs",
+              "DocumentMoniker": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\DTOs\\SimpleItemDto.cs",
+              "RelativeDocumentMoniker": "Orbital.API\\DTOs\\SimpleItemDto.cs",
+              "ToolTip": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\DTOs\\SimpleItemDto.cs",
+              "RelativeToolTip": "Orbital.API\\DTOs\\SimpleItemDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T22:45:08.83Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "CatalogosController.cs",
+              "DocumentMoniker": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\Controllers\\CatalogosController.cs",
+              "RelativeDocumentMoniker": "Orbital.API\\Controllers\\CatalogosController.cs",
+              "ToolTip": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\Controllers\\CatalogosController.cs",
+              "RelativeToolTip": "Orbital.API\\Controllers\\CatalogosController.cs",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAYwCcAAABXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T22:45:36.582Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "TipoAtmosferaService.cs",
+              "DocumentMoniker": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\Services\\TipoAtmosferaService.cs",
+              "RelativeDocumentMoniker": "Orbital.API\\Services\\TipoAtmosferaService.cs",
+              "ToolTip": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\Services\\TipoAtmosferaService.cs",
+              "RelativeToolTip": "Orbital.API\\Services\\TipoAtmosferaService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T22:45:27.442Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\Program.cs",
+              "RelativeDocumentMoniker": "Orbital.API\\Program.cs",
+              "ToolTip": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\Program.cs",
+              "RelativeToolTip": "Orbital.API\\Program.cs",
+              "ViewState": "AgIAADMAAAAAAAAAAAAEwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T22:45:30.709Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "GalaxiaService.cs",
+              "DocumentMoniker": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\Services\\GalaxiaService.cs",
+              "RelativeDocumentMoniker": "Orbital.API\\Services\\GalaxiaService.cs",
+              "ToolTip": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\Services\\GalaxiaService.cs",
+              "RelativeToolTip": "Orbital.API\\Services\\GalaxiaService.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T22:45:24.169Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "ITipoAtmosferaRepository.cs",
+              "DocumentMoniker": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\Repositories\\ITipoAtmosferaRepository.cs",
+              "RelativeDocumentMoniker": "Orbital.API\\Repositories\\ITipoAtmosferaRepository.cs",
+              "ToolTip": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\Repositories\\ITipoAtmosferaRepository.cs",
+              "RelativeToolTip": "Orbital.API\\Repositories\\ITipoAtmosferaRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T22:45:20.807Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "TipoAtmosfera.cs",
+              "DocumentMoniker": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\Models\\TipoAtmosfera.cs",
+              "RelativeDocumentMoniker": "Orbital.API\\Models\\TipoAtmosfera.cs",
+              "ToolTip": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\Models\\TipoAtmosfera.cs",
+              "RelativeToolTip": "Orbital.API\\Models\\TipoAtmosfera.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T21:52:30.857Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "Galaxia.cs",
+              "DocumentMoniker": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\Models\\Galaxia.cs",
+              "RelativeDocumentMoniker": "Orbital.API\\Models\\Galaxia.cs",
+              "ToolTip": "C:\\Users\\dania\\Downloads\\Proyecto orbital Backend\\Backend-OrBital\\Orbital.API\\Models\\Galaxia.cs",
+              "RelativeToolTip": "Orbital.API\\Models\\Galaxia.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T21:52:27.833Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
