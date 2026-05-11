@@ -75,34 +75,39 @@ builder.Services.AddScoped<TipoAtmosferaService>();
 // Servicios
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddAuthorization(options => {
-
-    options.AddPolicy("EmperadorOnly", policy =>
-    policy.RequireClaim("Id_Rol", RolesIds.Emperador));
-
-    options.AddPolicy("ComandanteOnly", policy =>
-        policy.RequireClaim("Id_Rol", RolesIds.Comandante));
-
-    options.AddPolicy("AnalistaOnly", policy =>
-        policy.RequireClaim("Id_Rol", RolesIds.Analista));
-
-    options.AddPolicy("DesarrolladorOnly", policy =>
-        policy.RequireClaim("Id_Rol", RolesIds.Desarrollador));
-
-    options.AddPolicy("EspecialistaOnly", policy =>
-        policy.RequireClaim("Id_Rol", RolesIds.Especialista));
-
-    options.AddPolicy("GestorOnly", policy =>
-        policy.RequireClaim("Id_Rol", RolesIds.Gestor));
-
-    options.AddPolicy("GuerreroConquistaOnly", policy =>
-        policy.RequireClaim("Id_Rol", RolesIds.GuerreroConquista));
-
-    options.AddPolicy("SistemaScouterOnly", policy =>
-        policy.RequireClaim("Id_Rol", RolesIds.SistemaScouter));
+builder.Services.AddSwaggerGen(options => {
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Ingresla el Token JWT Aqui Autenticar las peticiones",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "bearer"
+    });
+    options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+    {
+        [new OpenApiSecuritySchemeReference("Bearer", document)] = []
+    });
 });
 
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("EmperadorOnly", policy =>
+    policy.RequireClaim("Id_Rol", RolesIds.Emperador))
+    .AddPolicy("ComandanteOnly", policy =>
+        policy.RequireClaim("Id_Rol", RolesIds.Comandante))
+    .AddPolicy("AnalistaOnly", policy =>
+        policy.RequireClaim("Id_Rol", RolesIds.Analista))
+    .AddPolicy("DesarrolladorOnly", policy =>
+        policy.RequireClaim("Id_Rol", RolesIds.Desarrollador))
+    .AddPolicy("EspecialistaOnly", policy =>
+        policy.RequireClaim("Id_Rol", RolesIds.Especialista))
+    .AddPolicy("GestorOnly", policy =>
+        policy.RequireClaim("Id_Rol", RolesIds.Gestor))
+    .AddPolicy("GuerreroConquistaOnly", policy =>
+        policy.RequireClaim("Id_Rol", RolesIds.GuerreroConquista))
+    .AddPolicy("SistemaScouterOnly", policy =>
+        policy.RequireClaim("Id_Rol", RolesIds.SistemaScouter));
 
 var app = builder.Build();
 
