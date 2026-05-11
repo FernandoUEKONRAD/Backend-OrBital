@@ -8,6 +8,7 @@ namespace Orbital.API.Repositories
         Task<Usuario?> ObtenerPorEmail(string email);
         Task<List<Usuario>> ObtenerTodos();
         Task<Usuario?> ObtenerPorId(int id);
+        Task<List<Usuario>> ObtenerUltimos3PorRol(int rol);
         Task Actualizar(Usuario usuario);
     }
 }
