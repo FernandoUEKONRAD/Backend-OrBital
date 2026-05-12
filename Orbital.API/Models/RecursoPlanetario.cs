@@ -3,36 +3,26 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Orbital.API.Models
 {
-    [Table("recurso_planetario")]
+    [Table("recurso_planeta")]
     public class RecursoPlanetario
     {
         [Key]
-        [Column("id_recurso")]
-        public int Id_Recurso { get; set; }
+        [Column("id_recurso_planeta")]
+        public int Id_Recurso_Planeta { get; set; }
 
         [Column("id_planeta")]
         [Required]
         public int Id_Planeta { get; set; }
 
-        [Column("tipo_recurso")]
+        [Column("id_recurso")]
         [Required]
-        public string Tipo_Recurso { get; set; } = null!;
-
-        [Column("nombre_recurso")]
-        [Required]
-        public string Nombre_Recurso { get; set; } = null!;
+        public int Id_Recurso { get; set; }
 
         [Column("cantidad_estimada")]
         public decimal Cantidad_Estimada { get; set; } = 0.00m;
 
-        [Column("unidad_medida")]
-        public string Unidad_Medida { get; set; } = "unidades";
-
         [Column("valor_unitario")]
         public decimal Valor_Unitario { get; set; } = 0.00m;
-
-        [Column("rareza")]
-        public string Rareza { get; set; } = "Común";
 
         [Column("extraible")]
         public bool Extraible { get; set; } = true;
@@ -45,5 +35,8 @@ namespace Orbital.API.Models
         // =========================
         [ForeignKey("Id_Planeta")]
         public Planeta? Planeta { get; set; }
+
+        [ForeignKey("Id_Recurso")]
+        public Recurso? Recurso { get; set; }
     }
 }

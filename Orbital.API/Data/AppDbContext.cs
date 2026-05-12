@@ -20,7 +20,8 @@ namespace Orbital.API.Data
         public DbSet<PlanetaEstado> PlanetaEstados { get; set; }
         public DbSet<PlanetaValoracion> PlanetaValoraciones { get; set; }
         public DbSet<RecursoPlanetario> RecursosPlanetarios { get; set; }
-
+        public DbSet<MiembroEquipo> MiembrosEquipo { get; set; }
+        public DbSet<Recurso> Recursos { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -34,7 +35,9 @@ namespace Orbital.API.Data
             modelBuilder.Entity<Planeta>().ToTable("planeta");
             modelBuilder.Entity<PlanetaEstado>().ToTable("estado_planeta");
             modelBuilder.Entity<PlanetaValoracion>().ToTable("planeta_valoracion");
-            modelBuilder.Entity<RecursoPlanetario>().ToTable("recurso_planetario");
+            modelBuilder.Entity<RecursoPlanetario>().ToTable("recurso_planeta");
+            modelBuilder.Entity<MiembroEquipo>().ToTable("miembro_equipo");
+            modelBuilder.Entity<Recurso>().ToTable("recurso");
 
             // =========================
             // PRIMARY KEYS
@@ -58,6 +61,9 @@ namespace Orbital.API.Data
                 .HasKey(x => x.Id_Valoracion);
 
             modelBuilder.Entity<RecursoPlanetario>()
+            .HasKey(x => x.Id_Recurso_Planeta);
+
+            modelBuilder.Entity<Recurso>()
                 .HasKey(x => x.Id_Recurso);
 
             // =========================
@@ -128,6 +134,16 @@ namespace Orbital.API.Data
                 .WithMany()
                 .HasForeignKey(rp => rp.Id_Planeta)
                 .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<MiembroEquipo>()
+            .HasOne(m => m.Usuario)
+            .WithMany()
+            .HasForeignKey(m => m.Id_Usuario)
+            .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<RecursoPlanetario>()
+            .HasOne(rp => rp.Recurso)
+            .WithMany()
+            .HasForeignKey(rp => rp.Id_Recurso)
+            .OnDelete(DeleteBehavior.Restrict);
 
 
             // =========================
