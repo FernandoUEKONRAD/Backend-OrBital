@@ -70,9 +70,12 @@ namespace Orbital.API.Services
             var data = await _repository.ObtenerPlanetasPorGalaxia(galaxiaId);
             return data.Select(p => new PlanetaGalaxiaItemDto
             {
-                Id_Planeta   = p.Id_Planeta,
-                Nombre       = p.Nombre,
-                Coordenadas  = MapCoordenadas(p.Coordenadas)
+                Id_Planeta  = p.Id_Planeta,
+                Nombre      = p.Nombre,
+                Coordenadas = MapCoordenadas(p.Coordenadas),
+                Color1      = p.Color1,
+                Color2      = p.Color2,
+                Color3      = p.Color3
             });
         }
 
