@@ -57,6 +57,7 @@ namespace Orbital.API.Controllers
         // GET BY GALAXIA
         // Endpoint 2: Listar planetas por galaxia
         // =========================
+        [Authorize(Policy = "EmperadorOnly")]
         [HttpGet("galaxia/{galaxiaId:int}")]
         public async Task<IActionResult> ObtenerPlanetasPorGalaxia(int galaxiaId)
         {
@@ -81,6 +82,7 @@ namespace Orbital.API.Controllers
         // GET BY ID (detalle completo)
         // Endpoint 4: Obtener toda la información de un planeta
         // =========================
+        [Authorize(Policy = "EmperadorOnly")]
         [HttpGet("{id:int}")]
         public async Task<IActionResult> ObtenerPlanetaPorId(int id)
         {
@@ -130,6 +132,7 @@ namespace Orbital.API.Controllers
         // =========================
         // UPDATE
         // =========================
+        [Authorize(Policy = "EmperadorOnly")]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> ActualizarPlaneta(int id, [FromBody] PlanetaUpdateDto dto)
         {
@@ -157,6 +160,7 @@ namespace Orbital.API.Controllers
         // =========================
         // DELETE
         // =========================
+        [Authorize(Policy = "EmperadorOnly")]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> EliminarPlaneta(int id)
         {
