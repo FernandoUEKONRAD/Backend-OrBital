@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Orbital.API.DTOs;
 using Orbital.API.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Orbital.API.Controllers
 {
@@ -21,6 +22,7 @@ namespace Orbital.API.Controllers
         // GET ALL (con filtros)
         // Endpoint 3: Listar todos los planetas con condiciones por query
         // =========================
+        [Authorize(Policy = "EmperadorOnly")]
         [HttpGet]
         public async Task<IActionResult> ObtenerTodosPlanetas(
             [FromQuery] int? idPlaneta        = null,
@@ -55,6 +57,7 @@ namespace Orbital.API.Controllers
         // GET BY GALAXIA
         // Endpoint 2: Listar planetas por galaxia
         // =========================
+        [Authorize(Policy = "EmperadorOnly")]
         [HttpGet("galaxia/{galaxiaId:int}")]
         public async Task<IActionResult> ObtenerPlanetasPorGalaxia(int galaxiaId)
         {
@@ -79,6 +82,7 @@ namespace Orbital.API.Controllers
         // GET BY ID (detalle completo)
         // Endpoint 4: Obtener toda la información de un planeta
         // =========================
+        [Authorize(Policy = "EmperadorOnly")]
         [HttpGet("{id:int}")]
         public async Task<IActionResult> ObtenerPlanetaPorId(int id)
         {
@@ -105,6 +109,7 @@ namespace Orbital.API.Controllers
         // =========================
         // CREATE
         // =========================
+        [Authorize(Policy = "EmperadorOnly")]
         [HttpPost]
         public async Task<IActionResult> CrearPlaneta([FromBody] PlanetaCreateDto dto)
         {
@@ -127,6 +132,7 @@ namespace Orbital.API.Controllers
         // =========================
         // UPDATE
         // =========================
+        [Authorize(Policy = "EmperadorOnly")]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> ActualizarPlaneta(int id, [FromBody] PlanetaUpdateDto dto)
         {
@@ -154,6 +160,7 @@ namespace Orbital.API.Controllers
         // =========================
         // DELETE
         // =========================
+        [Authorize(Policy = "EmperadorOnly")]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> EliminarPlaneta(int id)
         {
