@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Orbital.API.DTOs;
 using Orbital.API.Services;
 using Microsoft.AspNetCore.Authorization;
+using Orbital.API.Authorization;
 
 namespace Orbital.API.Controllers
 {
@@ -26,7 +27,7 @@ namespace Orbital.API.Controllers
         /// <summary>
         /// Calcula y almacena la evaluación estratégica de un planeta
         /// </summary>
-        [Authorize(Policy = "EmperadorOnly")]
+        [Authorize(Policy = Policies.ValoracionesCreate)]
         [HttpPost]
         public async Task<IActionResult> EvaluarPlaneta([FromBody] ValoracionPlanetaCreateDto dto)
         {
@@ -79,7 +80,7 @@ namespace Orbital.API.Controllers
         /// <summary>
         /// Obtiene una valoración específica por su ID
         /// </summary>
-        [Authorize(Policy = "EmperadorOnly")]
+        [Authorize(Policy = Policies.ValoracionesRead)]
         [HttpGet("{id}")]
         public async Task<IActionResult> ObtenerValoracionPorId(int id)
         {
@@ -116,7 +117,7 @@ namespace Orbital.API.Controllers
         /// <summary>
         /// Obtiene todas las valoraciones registradas para un planeta específico
         /// </summary>
-        [Authorize(Policy = "EmperadorOnly")]
+        [Authorize(Policy = Policies.ValoracionesRead)]
         [HttpGet("planeta/{planetaId}")]
         public async Task<IActionResult> ObtenerValoracionesPlaneta(int planetaId)
         {
@@ -151,7 +152,7 @@ namespace Orbital.API.Controllers
         /// <summary>
         /// Obtiene los factores desglosados de una valoración
         /// </summary>
-        [Authorize(Policy = "EmperadorOnly")]
+        [Authorize(Policy = Policies.ValoracionesRead)]
         [HttpGet("{id}/factores")]
         public async Task<IActionResult> ObtenerFactoresValoracion(int id)
         {
@@ -188,7 +189,7 @@ namespace Orbital.API.Controllers
         /// <summary>
         /// Obtiene todas las valoraciones con filtros opcionales
         /// </summary>
-        [Authorize(Policy = "EmperadorOnly")]
+        [Authorize(Policy = Policies.ValoracionesRead)]
         [HttpGet]
         public async Task<IActionResult> ObtenerTodas(
             [FromQuery] string? estado = null,
@@ -229,7 +230,7 @@ namespace Orbital.API.Controllers
         /// <summary>
         /// Aprueba una valoración en estado Pendiente
         /// </summary>
-        [Authorize(Policy = "EmperadorOnly")]
+        [Authorize(Policy = Policies.ValoracionesApprove)]
         [HttpPatch("{id}/aprobar")]
         public async Task<IActionResult> AprobarValoracion(int id, [FromBody] AprobarValoracionDto dto)
         {
@@ -284,7 +285,7 @@ namespace Orbital.API.Controllers
         /// <summary>
         /// Rechaza una valoración en estado Pendiente
         /// </summary>
-        [Authorize(Policy = "EmperadorOnly")]
+        [Authorize(Policy = Policies.ValoracionesReject)]
         [HttpPatch("{id}/rechazar")]
         public async Task<IActionResult> RechazarValoracion(int id, [FromBody] RechazarValoracionDto dto)
         {

@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Orbital.API.Authorization
-{
+{ //temporal
     public static class AuthorizationExtensions
     {
         public static IServiceCollection AddCustomAuthorization(
@@ -10,7 +11,7 @@ namespace Orbital.API.Authorization
             services.AddAuthorization(options =>
             {
                 // =========================
-                //  PLANETAS
+                // PLANETAS
                 // =========================
                 options.AddPolicy(Policies.PlanetasRead, policy =>
                     policy.RequireClaim("Id_Rol",
@@ -21,21 +22,53 @@ namespace Orbital.API.Authorization
                         RolesIds.GuerreroConquista,
                         RolesIds.SistemaScouter));
 
-                options.AddPolicy(Policies.PlanetasWrite, policy =>
+                options.AddPolicy(Policies.PlanetasCreate, policy =>
                     policy.RequireClaim("Id_Rol",
                         RolesIds.Emperador,
                         RolesIds.Comandante,
                         RolesIds.SistemaScouter));
 
+                options.AddPolicy(Policies.PlanetasUpdate, policy =>
+                    policy.RequireClaim("Id_Rol",
+                        RolesIds.Emperador,
+                        RolesIds.Comandante,
+                        RolesIds.SistemaScouter));
+
+                options.AddPolicy(Policies.PlanetasDelete, policy =>
+                    policy.RequireClaim("Id_Rol",
+                        RolesIds.Emperador,
+                        RolesIds.Comandante,
+                        RolesIds.SistemaScouter));
+
+
                 // =========================
                 // PLANETA ESTADO
                 // =========================
-                options.AddPolicy(Policies.PlanetaEstadoManage, policy =>
+                options.AddPolicy(Policies.PlanetaEstadoRead, policy =>
                     policy.RequireClaim("Id_Rol",
                         RolesIds.Emperador,
                         RolesIds.Comandante,
                         RolesIds.Especialista,
                         RolesIds.SistemaScouter));
+
+                options.AddPolicy(Policies.PlanetaEstadoCreate, policy =>
+                    policy.RequireClaim("Id_Rol",
+                        RolesIds.Emperador,
+                        RolesIds.Comandante,
+                        RolesIds.SistemaScouter));
+
+                options.AddPolicy(Policies.PlanetaEstadoUpdate, policy =>
+                    policy.RequireClaim("Id_Rol",
+                        RolesIds.Emperador,
+                        RolesIds.Comandante,
+                        RolesIds.SistemaScouter));
+
+                options.AddPolicy(Policies.PlanetaEstadoDelete, policy =>
+                    policy.RequireClaim("Id_Rol",
+                        RolesIds.Emperador,
+                        RolesIds.Comandante,
+                        RolesIds.SistemaScouter));
+
 
                 // =========================
                 // CATÁLOGOS
@@ -51,6 +84,7 @@ namespace Orbital.API.Authorization
                         RolesIds.GuerreroConquista,
                         RolesIds.SistemaScouter));
 
+
                 // =========================
                 // USUARIOS
                 // =========================
@@ -60,11 +94,24 @@ namespace Orbital.API.Authorization
                         RolesIds.Desarrollador,
                         RolesIds.SistemaScouter));
 
-                options.AddPolicy(Policies.UsuariosWrite, policy =>
+                options.AddPolicy(Policies.UsuariosCreate, policy =>
                     policy.RequireClaim("Id_Rol",
                         RolesIds.Emperador,
                         RolesIds.Desarrollador,
                         RolesIds.SistemaScouter));
+
+                options.AddPolicy(Policies.UsuariosUpdate, policy =>
+                    policy.RequireClaim("Id_Rol",
+                        RolesIds.Emperador,
+                        RolesIds.Desarrollador,
+                        RolesIds.SistemaScouter));
+
+                options.AddPolicy(Policies.UsuariosDelete, policy =>
+                    policy.RequireClaim("Id_Rol",
+                        RolesIds.Emperador,
+                        RolesIds.Desarrollador,
+                        RolesIds.SistemaScouter));
+
 
                 // =========================
                 // VALORACIONES
@@ -77,7 +124,21 @@ namespace Orbital.API.Authorization
                         RolesIds.Especialista,
                         RolesIds.SistemaScouter));
 
-                options.AddPolicy(Policies.ValoracionesWrite, policy =>
+                options.AddPolicy(Policies.ValoracionesCreate, policy =>
+                    policy.RequireClaim("Id_Rol",
+                        RolesIds.Emperador,
+                        RolesIds.Comandante,
+                        RolesIds.Analista,
+                        RolesIds.SistemaScouter));
+
+                options.AddPolicy(Policies.ValoracionesUpdate, policy =>
+                    policy.RequireClaim("Id_Rol",
+                        RolesIds.Emperador,
+                        RolesIds.Comandante,
+                        RolesIds.Analista,
+                        RolesIds.SistemaScouter));
+
+                options.AddPolicy(Policies.ValoracionesDelete, policy =>
                     policy.RequireClaim("Id_Rol",
                         RolesIds.Emperador,
                         RolesIds.Comandante,
@@ -90,6 +151,7 @@ namespace Orbital.API.Authorization
                         RolesIds.Comandante,
                         RolesIds.SistemaScouter));
 
+
                 // =========================
                 // JERARQUÍAS
                 // =========================
@@ -100,15 +162,50 @@ namespace Orbital.API.Authorization
                         RolesIds.Analista,
                         RolesIds.SistemaScouter));
 
+
                 // =========================
-                // 🎖 ROLES
+                // ROLES
                 // =========================
                 options.AddPolicy(Policies.RolesRead, policy =>
                     policy.RequireClaim("Id_Rol",
                         RolesIds.Emperador,
                         RolesIds.Desarrollador,
                         RolesIds.SistemaScouter));
-            });
+
+                 // =========================
+                // Valoraciones
+                // =========================
+            
+
+                options.AddPolicy(Policies.ValoracionesRead, policy =>
+                    policy.RequireClaim("Id_Rol",
+                        RolesIds.Emperador,
+                        RolesIds.Comandante,
+                        RolesIds.Analista,
+                        RolesIds.Especialista,
+                        RolesIds.SistemaScouter));
+
+                options.AddPolicy(Policies.ValoracionesCreate, policy =>
+                    policy.RequireClaim("Id_Rol",
+                        RolesIds.Emperador,
+                        RolesIds.Comandante,
+                        RolesIds.Analista,
+                        RolesIds.SistemaScouter));
+
+                options.AddPolicy(Policies.ValoracionesReject, policy =>
+                    policy.RequireClaim("Id_Rol",
+                        RolesIds.Emperador,
+                        RolesIds.Comandante,
+                        RolesIds.Analista,
+                        RolesIds.SistemaScouter));
+
+
+                options.AddPolicy(Policies.ValoracionesApprove, policy =>
+                    policy.RequireClaim("Id_Rol",
+                        RolesIds.Emperador,
+                        RolesIds.Comandante,
+                        RolesIds.SistemaScouter));
+                });
 
             return services;
         }
