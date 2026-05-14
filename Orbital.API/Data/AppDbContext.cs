@@ -22,6 +22,8 @@ namespace Orbital.API.Data
         public DbSet<CoordenadasPlaneta> CoordenadasPlanetas { get; set; }
         public DbSet<PlanetaEstado> PlanetaEstados { get; set; }
         public DbSet<PlanetaValoracion> PlanetaValoraciones { get; set; }
+        public DbSet<RecursoPlanetario> RecursosPlanetarios { get; set; }
+        public DbSet<MiembroEquipo> MiembrosEquipo { get; set; }
         public DbSet<Recurso> Recursos { get; set; }
         public DbSet<RecursoPlaneta> RecursosPlaneta { get; set; }
         public DbSet<Mision> Misiones { get; set; }
@@ -42,25 +44,56 @@ namespace Orbital.API.Data
             modelBuilder.Entity<CoordenadasPlaneta>().ToTable("coordenada_planeta");
             modelBuilder.Entity<PlanetaEstado>().ToTable("estado_planeta");
             modelBuilder.Entity<PlanetaValoracion>().ToTable("planeta_valoracion");
+            modelBuilder.Entity<RecursoPlanetario>().ToTable("recurso_planeta");
+            modelBuilder.Entity<MiembroEquipo>().ToTable("miembro_equipo");
             modelBuilder.Entity<Recurso>().ToTable("recurso");
-            modelBuilder.Entity<RecursoPlaneta>().ToTable("recurso_planeta");
-            modelBuilder.Entity<Mision>().ToTable("mision");
 
             // =========================
             // PRIMARY KEYS
             // =========================
-            modelBuilder.Entity<Usuario>().HasKey(x => x.Id_Usuario);
-            modelBuilder.Entity<Rol>().HasKey(x => x.Id_Rol);
-            modelBuilder.Entity<Jerarquia>().HasKey(x => x.Id_Jerarquia);
-            modelBuilder.Entity<Galaxia>().HasKey(x => x.Id_Galaxia);
-            modelBuilder.Entity<TipoAtmosfera>().HasKey(x => x.Id_Atmosfera);
-            modelBuilder.Entity<Planeta>().HasKey(x => x.Id_Planeta);
-            modelBuilder.Entity<CoordenadasPlaneta>().HasKey(x => x.Id_Coordenada);
-            modelBuilder.Entity<PlanetaEstado>().HasKey(x => x.Id_Estado);
-            modelBuilder.Entity<PlanetaValoracion>().HasKey(x => x.Id_Valoracion);
-            modelBuilder.Entity<Recurso>().HasKey(x => x.Id_Recurso);
-            modelBuilder.Entity<RecursoPlaneta>().HasKey(x => x.Id_Recurso_Planeta);
-            modelBuilder.Entity<Mision>().HasKey(x => x.Id_Mision);
+            modelBuilder.Entity<Usuario>()
+                .HasKey(x => x.Id_Usuario);
+
+            modelBuilder.Entity<Rol>()
+                .HasKey(x => x.Id_Rol);
+
+            modelBuilder.Entity<Jerarquia>()
+                .HasKey(x => x.Id_Jerarquia);
+
+            modelBuilder.Entity<Galaxia>()
+                .HasKey(x => x.Id_Galaxia);
+            
+            modelBuilder.Entity<TipoAtmosfera>()
+                .HasKey(x => x.Id_Atmosfera);
+
+            modelBuilder.Entity<Planeta>()
+                .HasKey(x => x.Id_Planeta);
+
+            modelBuilder.Entity<CoordenadasPlaneta>()
+                .HasKey(x => x.Id_Coordenada);
+            
+            modelBuilder.Entity<PlanetaEstado>()
+                .HasKey(x => x.Id_Estado);
+
+            modelBuilder.Entity<PlanetaValoracion>()
+                .HasKey(x => x.Id_Valoracion);
+
+            modelBuilder.Entity<PlanetaValoracion>()
+                .HasKey(x => x.Id_Valoracion);
+
+
+            modelBuilder.Entity<RecursoPlanetario>()
+            .HasKey(x => x.Id_Recurso_Planeta);
+
+            modelBuilder.Entity<Recurso>()
+                .HasKey(x => x.Id_Recurso);
+
+            
+            modelBuilder.Entity<RecursoPlaneta>()
+                .HasKey(x => x.Id_Recurso_Planeta);
+                
+            modelBuilder.Entity<Mision>()
+                .HasKey(x => x.Id_Mision);
 
             // =========================
             // RELACIONES - Usuario
@@ -86,10 +119,10 @@ namespace Orbital.API.Data
                 .HasForeignKey(p => p.Id_Estado)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Planeta>()
-                .HasOne(p => p.GalaxiaNav)
+            modelBuilder.Entity<PlanetaValoracion>()
+                .HasOne(pv => pv.Planeta)
                 .WithMany()
-                .HasForeignKey(p => p.Id_Galaxia)
+                .HasForeignKey(p => p.Id_Planeta)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Planeta>()
@@ -142,6 +175,23 @@ namespace Orbital.API.Data
                 .WithMany()
                 .HasForeignKey(pv => pv.Aprobado_Por)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<RecursoPlanetario>()
+                .HasOne(rp => rp.Planeta)
+                .WithMany()
+                .HasForeignKey(rp => rp.Id_Planeta)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<MiembroEquipo>()
+            .HasOne(m => m.Usuario)
+            .WithMany()
+            .HasForeignKey(m => m.Id_Usuario)
+            .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<RecursoPlanetario>()
+            .HasOne(rp => rp.Recurso)
+            .WithMany()
+            .HasForeignKey(rp => rp.Id_Recurso)
+            .OnDelete(DeleteBehavior.Restrict);
+
 
             // =========================
             // CONVERSIONES Y RESTRICCIONES

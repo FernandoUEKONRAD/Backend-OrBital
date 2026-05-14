@@ -29,6 +29,8 @@ namespace Orbital.API.Authorization
         public const string ValoracionesRead = "Valoraciones.Read";
         public const string ValoracionesCreate  = "Valoraciones.Create";
         public const string ValoracionesApprove = "Valoraciones.Approve";
+        public const string ValoracionesUpdate  = "Valoraciones.Update";
+        public const string ValoracionesDelete  = "Valoraciones.Delete";
         public const string ValoracionesReject  = "Valoraciones.Reject";
 
         // JERARQUÍAS
