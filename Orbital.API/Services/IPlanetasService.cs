@@ -4,9 +4,19 @@ namespace Orbital.API.Services
 {
     public interface IPlanetasService
     {
-        Task<IEnumerable<PlanetaResponseDto>> ObtenerTodosPlanetas();
+        Task<IEnumerable<PlanetaListItemDto>> ObtenerTodosPlanetas(
+            int? idPlaneta = null,
+            string? nombre = null,
+            int? idAtmosfera = null,
+            NivelTecnologico? nivelTecnologico = null,
+            long? poblacionMin = null,
+            long? poblacionMax = null,
+            int? idEstado = null,
+            string? tipoRecurso = null);
 
-        Task<PlanetaResponseDto> ObtenerPlanetaPorId(int id);
+        Task<IEnumerable<PlanetaGalaxiaItemDto>> ObtenerPlanetasPorGalaxia(int galaxiaId);
+
+        Task<PlanetaDetalleDto?> ObtenerPlanetaPorId(int id);
 
         Task<PlanetaResponseDto> CrearPlaneta(PlanetaCreateDto dto);
 

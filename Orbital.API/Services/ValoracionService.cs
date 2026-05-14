@@ -53,7 +53,7 @@ namespace Orbital.API.Services
             }
 
             // 3. Obtener recursos del planeta
-            var recursos = await _context.RecursosPlanetarios
+            var recursos = await _context.RecursosPlaneta
                 .Where(r => r.Id_Planeta == planetaId)
                 .ToListAsync();
 
@@ -61,7 +61,7 @@ namespace Orbital.API.Services
 
             // 4. Calcular scores
             var recursosScore = _calculador.CalcularRecursosScore(recursos);
-            var poderScore = _calculador.CalcularPoderScore(planeta.Nivel_Vida_Nativa);
+            var poderScore = _calculador.CalcularPoderScore(planeta.Nivel_Vida_Planeta);
             var dificultadScore = _calculador.CalcularDificultadScore(poderScore);
             var tecnologiaScore = _calculador.CalcularTecnologiaScore((int)planeta.Nivel_Tecnologico);
             var ubicacionScore = _calculador.CalcularUbicacionScore();

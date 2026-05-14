@@ -15,7 +15,6 @@ namespace Orbital.API.Models
         public string Nombre { get; set; } = null!;
 
         [Column("tipo_recurso")]
-        [Required]
         public string Tipo_Recurso { get; set; } = null!;
 
         [Column("unidad_medida")]
@@ -23,5 +22,8 @@ namespace Orbital.API.Models
 
         [Column("rareza")]
         public string Rareza { get; set; } = "Común";
+
+        [Column("descripcion")]
+        public string? Descripcion { get; set; }
     }
 }

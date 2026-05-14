@@ -37,6 +37,17 @@ namespace Orbital.API.Repositories
             return await _context.Usuarios.FindAsync(id);
         }
 
+        public async Task<List<Usuario>> ObtenerUltimos3PorRol(int rol)
+        {
+            return await _context.Usuarios
+                .Include(u => u.Rol.Nombre_Rol)
+                .Include(u => u.Jerarquia.Nombre_Jerarquia)
+                .Where(u => u.Id_Rol == rol)
+                .OrderByDescending(u => u.Fecha_Registro)
+                .Take(3)
+                .ToListAsync();
+        }
+
         public async Task Actualizar(Usuario usuario)
         {
             _context.Usuarios.Update(usuario);
