@@ -22,6 +22,6 @@ namespace Orbital.API.Services
 
         Task<PlanetaResponseDto> ActualizarPlaneta(int id, PlanetaUpdateDto dto);
 
-        Task<bool> EliminarPlaneta(int id);
+        Task<bool> DesactivarPlaneta(int id, int idUsuario, DesactivarPlanetaDto dto);
     }
 }

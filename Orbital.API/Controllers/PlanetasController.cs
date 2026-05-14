@@ -159,25 +159,41 @@ namespace Orbital.API.Controllers
         }
 
         // =========================
-        // DELETE
+        // DELETE (Soft Delete - Desactivación)
         // =========================
         [Authorize(Policy = Policies.PlanetasDelete)]
-        [HttpDelete("{id:int}")]
-        public async Task<IActionResult> EliminarPlaneta(int id)
+        [HttpPatch("{id:int}/desactivar")]
+        public async Task<IActionResult> DesactivarPlaneta(int id, [FromBody] DesactivarPlanetaDto dto)
         {
             try
             {
-                var eliminado = await _service.EliminarPlaneta(id);
+                // Obtener ID del usuario desde el contexto (suponiendo que está en Claims)
+                var userIdClaim = User.FindFirst("sub")?.Value ?? User.FindFirst("nameid")?.Value;
+                if (!int.TryParse(userIdClaim, out int idUsuario))
+                {
+                    return Unauthorized(new { message = "No se puede determinar la identidad del usuario" });
+                }
 
-                if (!eliminado)
-                    return NotFound(new { message = "Planeta no encontrado" });
+                var desactivado = await _service.DesactivarPlaneta(id, idUsuario, dto);
 
-                return Ok(new { message = "Planeta eliminado exitosamente" });
+                return Ok(new
+                {
+                    message = "Planeta desactivado exitosamente",
+                    data = new { desactivado }
+                });
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound(new { message = "Planeta o usuario no encontrado" });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al eliminar planeta {Id}", id);
-                return StatusCode(500, new { message = "Error interno al eliminar planeta", error = ex.Message });
+                _logger.LogError(ex, "Error al desactivar planeta {Id}", id);
+                return StatusCode(500, new { message = "Error interno al desactivar planeta", error = ex.Message });
             }
         }
     }

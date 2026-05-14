@@ -27,6 +27,10 @@ namespace Orbital.API.Data
         public DbSet<Recurso> Recursos { get; set; }
         public DbSet<RecursoPlaneta> RecursosPlaneta { get; set; }
         public DbSet<Mision> Misiones { get; set; }
+        public DbSet<Auditoria> Auditorias { get; set; }
+        public DbSet<MercadoPlaneta> MercadoPlanetas { get; set; }
+        public DbSet<AmenazaDeteccion> AmenazasDeteccion { get; set; }
+        public DbSet<Transaccion> Transacciones { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -94,6 +98,18 @@ namespace Orbital.API.Data
                 
             modelBuilder.Entity<Mision>()
                 .HasKey(x => x.Id_Mision);
+
+            modelBuilder.Entity<Auditoria>()
+                .HasKey(x => x.Id_Auditoria);
+
+            modelBuilder.Entity<MercadoPlaneta>()
+                .HasKey(x => x.Id_Publicacion);
+
+            modelBuilder.Entity<AmenazaDeteccion>()
+                .HasKey(x => x.Id_Amenaza);
+
+            modelBuilder.Entity<Transaccion>()
+                .HasKey(x => x.Id_Transaccion);
 
             // =========================
             // RELACIONES - Usuario

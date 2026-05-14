@@ -1,16 +1,22 @@
 using Orbital.API.DTOs;
 using Orbital.API.Models;
 using Orbital.API.Repositories;
+using Orbital.API.Data;
+using Microsoft.Extensions.Logging;
 
 namespace Orbital.API.Services
 {
     public class PlanetasService : IPlanetasService
     {
         private readonly IPlanetasRepository _repository;
+        private readonly AppDbContext _context;
+        private readonly ILogger<PlanetasService> _logger;
 
-        public PlanetasService(IPlanetasRepository repository)
+        public PlanetasService(IPlanetasRepository repository, AppDbContext context, ILogger<PlanetasService> logger)
         {
             _repository = repository;
+            _context = context;
+            _logger = logger;
         }
 
         public async Task<PlanetaResponseDto> CrearPlaneta(PlanetaCreateDto dto)
@@ -132,9 +138,99 @@ namespace Orbital.API.Services
             return MapToSimpleDto(actualizado);
         }
 
-        public async Task<bool> EliminarPlaneta(int id)
+        public async Task<bool> DesactivarPlaneta(int id, int idUsuario, DesactivarPlanetaDto dto)
         {
-            return await _repository.EliminarPlaneta(id);
+            _logger.LogInformation("Iniciando desactivación del planeta {IdPlaneta} por usuario {IdUsuario}", id, idUsuario);
+
+            // Obtener planeta
+            var planeta = await _repository.ObtenerPlanetaPorId(id);
+            if (planeta == null)
+            {
+                _logger.LogWarning("Planeta {IdPlaneta} no encontrado", id);
+                throw new KeyNotFoundException("Planeta no encontrado");
+            }
+
+            // Validar procesos activos asociados
+            var procesosActivos = new List<string>();
+
+            // 1. Validar misiones activas (estados: 1=Pendiente, 2=En Preparación, 3=En Curso)
+            var misionesActivas = _context.Misiones
+                .Where(m => m.Id_Planeta == id && 
+                           (m.Id_Estado_Mision == 1 || m.Id_Estado_Mision == 2 || m.Id_Estado_Mision == 3))
+                .Count();
+            if (misionesActivas > 0)
+                procesosActivos.Add($"Misiones activas: {misionesActivas}");
+
+            // 2. Validar valoraciones pendientes
+            var valoracionesPendientes = _context.PlanetaValoraciones
+                .Where(v => v.Id_Planeta == id && v.Estado_Valoracion == "Pendiente")
+                .Count();
+            if (valoracionesPendientes > 0)
+                procesosActivos.Add($"Valoraciones pendientes: {valoracionesPendientes}");
+
+            // 3. Validar publicaciones en mercado activas
+            var publicacionesActivas = _context.MercadoPlanetas
+                .Where(m => m.Id_Planeta == id && m.Activo)
+                .Count();
+            if (publicacionesActivas > 0)
+                procesosActivos.Add($"Publicaciones en mercado: {publicacionesActivas}");
+
+            // 4. Validar amenazas activas
+            var amenazasActivas = _context.AmenazasDeteccion
+                .Where(a => a.Id_Planeta == id && 
+                           (a.Estado_Amenaza == "Activa" || a.Estado_Amenaza == "En Seguimiento" || a.Estado_Amenaza == "Escalada"))
+                .Count();
+            if (amenazasActivas > 0)
+                procesosActivos.Add($"Amenazas detectadas: {amenazasActivas}");
+
+            // 5. Validar transacciones activas del planeta (a través del mercado)
+            var transaccionesActivas = _context.Transacciones
+                .Where(t => _context.MercadoPlanetas.Where(m => m.Id_Planeta == id).Select(m => m.Id_Publicacion).Contains(t.Id_Publicacion) &&
+                           (t.Estado_Transaccion == "Pendiente" || t.Estado_Transaccion == "En Disputa"))
+                .Count();
+            if (transaccionesActivas > 0)
+                procesosActivos.Add($"Transacciones activas: {transaccionesActivas}");
+
+            // Bloquear si hay procesos activos
+            if (procesosActivos.Count > 0)
+            {
+                var mensaje = $"No se puede desactivar el planeta. Procesos activos: {string.Join("; ", procesosActivos)}";
+                _logger.LogWarning("Intento de desactivación bloqueado para planeta {IdPlaneta}: {Procesos}", id, mensaje);
+                throw new InvalidOperationException(mensaje);
+            }
+
+            // Obtener usuario que realiza la acción
+            var usuario = await _context.Usuarios.FindAsync(idUsuario);
+            if (usuario == null)
+            {
+                _logger.LogWarning("Usuario {IdUsuario} no encontrado", idUsuario);
+                throw new KeyNotFoundException("Usuario no encontrado");
+            }
+
+            // Marcar planeta como inactivo
+            planeta.Activo = false;
+            await _repository.ActualizarPlaneta(planeta);
+
+            // Registrar en auditoría
+            var auditoria = new Auditoria
+            {
+                Id_Usuario = idUsuario,
+                Accion = "DESACTIVAR_PLANETA",
+                Tabla_Afectada = "planeta",
+                Id_Registro_Afectado = planeta.Id_Planeta,
+                Valor_Anterior = $"Activo: true, Nombre: {planeta.Nombre}",
+                Valor_Nuevo = $"Activo: false, Justificación: {dto.Justificacion}",
+                Timestamp_Accion = DateTime.UtcNow,
+                Resultado = "Exitoso"
+            };
+
+            _context.Auditorias.Add(auditoria);
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("Planeta {IdPlaneta} desactivado exitosamente. Auditoría registrada: {IdAuditoria}", 
+                id, auditoria.Id_Auditoria);
+
+            return true;
         }
 
         // =========================
