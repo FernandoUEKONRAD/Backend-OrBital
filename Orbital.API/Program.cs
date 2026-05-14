@@ -59,15 +59,16 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<IPlanetasRepository, PlanetasRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IPlanetaEstadoRepository, PlanetaEstadoRepository>();
-
+builder.Services.AddScoped<IRecursoPlanetarioRepository, RecursoPlanetarioRepository>();
+builder.Services.AddScoped<IRecursoRepository, RecursoRepository>();
 // Inyección de dependencias - Servicios
 builder.Services.AddScoped<IPlanetasService, PlanetasService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<PlanetaEstadoService>();
 builder.Services.AddScoped<IValoracionService, ValoracionService>();
-
-
+builder.Services.AddScoped<IRecursoService, RecursoService>();
+builder.Services.AddScoped<IRecursoPlanetarioService, RecursoPlanetarioService>();
 // Servicios
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

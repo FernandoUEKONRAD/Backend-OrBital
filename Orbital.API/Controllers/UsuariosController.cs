@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Orbital.API.Services;
 using Microsoft.AspNetCore.Authorization;
+using Orbital.API.DTOs;
 
 namespace Orbital.API.Controllers
 {
@@ -29,6 +30,16 @@ namespace Orbital.API.Controllers
         {
             var result = await _service.ObtenerUltimos3UsuariosPorRol();
             return Ok(result);
+        }
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> PatchUsuario(int id, [FromBody] UsuarioUpdateDto dto)
+        {
+            var usuario = await _service.GetUsuarioById(id);
+            if (usuario == null)
+                return NotFound();
+
+            await _service.UpdateUsuario(id, dto);
+            return NoContent();
         }
     }
 }

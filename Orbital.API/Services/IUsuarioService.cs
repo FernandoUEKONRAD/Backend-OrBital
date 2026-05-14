@@ -6,5 +6,7 @@ namespace Orbital.API.Services
     {
         Task<List<UsuarioResponseDto>> GetUsuarios();
         Task<Dictionary<string, List<UsuarioResponseDto>>> ObtenerUltimos3UsuariosPorRol();
+        Task<UsuarioResponseDto?> GetUsuarioById(int id);
+        Task UpdateUsuario(int id, UsuarioUpdateDto dto);
     }
 }
