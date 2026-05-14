@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Orbital.API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Orbital.API.DTOs;
+using Orbital.API.Authorization;
 
 namespace Orbital.API.Controllers
 {
@@ -16,7 +17,7 @@ namespace Orbital.API.Controllers
             _service = service;
         }
 
-        [Authorize(Policy = "EmperadorOnly")]
+        [Authorize(Policy = Policies.UsuariosRead)]
         [HttpGet]
         public async Task<IActionResult> GetUsuarios()
         {
@@ -24,7 +25,7 @@ namespace Orbital.API.Controllers
             return Ok(usuarios);
         }
 
-        [Authorize(Policy = "EmperadorOnly")]
+        [Authorize(Policy = Policies.UsuariosRead)]
         [HttpGet("/ultimos")]
         public async Task<IActionResult> ObtenerUltimos3UsuariosPorRol()
         {

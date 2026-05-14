@@ -6,6 +6,7 @@ using Orbital.API.Data;
 using Orbital.API.Repositories;
 using Orbital.API.Services;
 using System.Text;
+using Orbital.API.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -88,26 +89,12 @@ builder.Services.AddSwaggerGen(options => {
     });
 });
 
-builder.Services.AddAuthorizationBuilder()
-    .AddPolicy("EmperadorOnly", policy =>
-    policy.RequireClaim("Id_Rol", RolesIds.Emperador))
-    .AddPolicy("ComandanteOnly", policy =>
-        policy.RequireClaim("Id_Rol", RolesIds.Comandante))
-    .AddPolicy("AnalistaOnly", policy =>
-        policy.RequireClaim("Id_Rol", RolesIds.Analista))
-    .AddPolicy("DesarrolladorOnly", policy =>
-        policy.RequireClaim("Id_Rol", RolesIds.Desarrollador))
-    .AddPolicy("EspecialistaOnly", policy =>
-        policy.RequireClaim("Id_Rol", RolesIds.Especialista))
-    .AddPolicy("GestorOnly", policy =>
-        policy.RequireClaim("Id_Rol", RolesIds.Gestor))
-    .AddPolicy("GuerreroConquistaOnly", policy =>
-        policy.RequireClaim("Id_Rol", RolesIds.GuerreroConquista))
-    .AddPolicy("SistemaScouterOnly", policy =>
-        policy.RequireClaim("Id_Rol", RolesIds.SistemaScouter));
+
 
 var app = builder.Build();
 
+//control de rutas
+builder.Services.AddCustomAuthorization();
 
 // Swagger
 if (app.Environment.IsDevelopment())
@@ -127,16 +114,3 @@ app.MapControllers();
 app.Run();
 
 
-// "mapeo" de los roles para las politicas de los tokens
- 
-public static class RolesIds
-{
-    public const string Emperador = "1";
-    public const string Comandante = "2";
-    public const string Analista = "3";
-    public const string Desarrollador = "4";
-    public const string Especialista = "5";
-    public const string Gestor = "6";
-    public const string GuerreroConquista = "7";
-    public const string SistemaScouter = "8";
-}
