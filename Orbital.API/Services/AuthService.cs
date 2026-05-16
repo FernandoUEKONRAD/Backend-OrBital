@@ -21,7 +21,7 @@ namespace Orbital.API.Services
             _configuration = configuration;
         }
 
-        public async Task<ResponseLoginDto> Login(UsuarioLoginDto dto)
+        public async Task<ResponseLoginDto?> Login(UsuarioLoginDto dto)
         {
             var usuario = await _repo.ObtenerPorEmail(dto.Correo.ToLower());
 

@@ -20,8 +20,8 @@ namespace Orbital.API.Models
 
         public DateTime? Ultimo_Acceso { get; set; }
 
-        public Rol Rol { get; set; }
+        public Rol Rol { get; set; } = null!;
 
-        public Jerarquia Jerarquia { get; set; }
+        public Jerarquia Jerarquia { get; set; } = null!;
     }
 }

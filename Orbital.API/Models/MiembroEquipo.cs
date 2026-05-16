@@ -30,6 +30,6 @@ namespace Orbital.API.Models
         public bool Activo { get; set; }
 
         [ForeignKey("Id_Usuario")]
-        public Usuario Usuario { get; set; }
+        public Usuario Usuario { get; set; } = null!;
     }
 }
