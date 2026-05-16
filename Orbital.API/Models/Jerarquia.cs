@@ -18,6 +18,6 @@ namespace Orbital.API.Models
         [Column("nivel_poder_minimo")]
         public int Nivel_Poder_Minimo { get; set; }
         [Column("nivel_poder_maximo")]
-        public int Nivel_Poder_Maximo { get; set; }
+        public int? Nivel_Poder_Maximo { get; set; }
     }
 }
