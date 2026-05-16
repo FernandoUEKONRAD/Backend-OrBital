@@ -48,6 +48,10 @@ namespace Orbital.API.Controllers
                     data = resultado
                 });
             }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
             catch (InvalidOperationException ex)
             {
                 _logger.LogWarning(ex, "Error al procesar compra de publicación {Id}", idPublicacion);
@@ -60,7 +64,13 @@ namespace Orbital.API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error al comprar planeta publicación {Id}", idPublicacion);
-                return StatusCode(500, new { message = "Error interno al procesar compra", error = ex.Message });
+                return StatusCode(500, new
+                {
+                    message = "Error interno al procesar compra",
+                    error = ex.Message,
+                    innerError = ex.InnerException?.Message,
+                    innerInnerError = ex.InnerException?.InnerException?.Message
+                });
             }
         }
 

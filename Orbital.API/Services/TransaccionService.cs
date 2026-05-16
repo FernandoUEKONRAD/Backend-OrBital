@@ -17,9 +17,21 @@ namespace Orbital.API.Services
             _logger = logger;
         }
 
+        private static readonly string[] MetodosPagoValidos =
+        [
+            "Créditos Galácticos",
+            "Criptomoneda",
+            "Intercambio Territorial",
+            "Contrato de Servicios"
+        ];
+
         public async Task<TransaccionListItemDto> ComprarPlaneta(
             int idPublicacion, int idCliente, ComprarPlanetaDto dto, string ipOrigen)
         {
+            if (!MetodosPagoValidos.Contains(dto.Metodo_Pago))
+                throw new ArgumentException(
+                    $"Método de pago inválido. Valores permitidos: {string.Join(", ", MetodosPagoValidos)}");
+
             var ahora = DateTime.Now;
 
             var publicacion = await _context.MercadoPlanetas
@@ -42,57 +54,61 @@ namespace Orbital.API.Services
                 throw new InvalidOperationException(
                     $"Crédito insuficiente. Disponible: {cliente.Credito_Disponible}, Requerido: {publicacion.Precio_Publicado}");
 
-            using var dbTransaction = await _context.Database.BeginTransactionAsync();
-            try
+            Transaccion transaccion;
+            using (var dbTransaction = await _context.Database.BeginTransactionAsync())
             {
-                cliente.Credito_Disponible -= publicacion.Precio_Publicado;
-                _context.Clientes.Update(cliente);
-
-                var transaccion = new Transaccion
+                try
                 {
-                    Id_Publicacion = idPublicacion,
-                    Id_Comprador = idCliente,
-                    Id_Vendedor = publicacion.Id_Publicado_Por,
-                    Precio_Final = publicacion.Precio_Publicado,
-                    Fecha_Transaccion = ahora,
-                    Estado_Transaccion = "Pendiente",
-                    Metodo_Pago = dto.Metodo_Pago,
-                    Notas = dto.Notas
-                };
+                    cliente.Credito_Disponible -= publicacion.Precio_Publicado;
+                    _context.Clientes.Update(cliente);
 
-                _context.Transacciones.Add(transaccion);
-                await _context.SaveChangesAsync();
-                await dbTransaction.CommitAsync();
+                    transaccion = new Transaccion
+                    {
+                        Id_Publicacion = idPublicacion,
+                        Id_Comprador = idCliente,
+                        Id_Vendedor = publicacion.Id_Publicado_Por,
+                        Precio_Final = publicacion.Precio_Publicado,
+                        Fecha_Transaccion = ahora,
+                        Estado_Transaccion = "Pendiente",
+                        Metodo_Pago = dto.Metodo_Pago,
+                        Notas = dto.Notas
+                    };
 
-                await RegistrarAuditoria(
-                    null, "COMPRA_INICIADA", "transaccion",
-                    transaccion.Id_Transaccion,
-                    null,
-                    JsonSerializer.Serialize(new { idPublicacion, idCliente, transaccion.Precio_Final }),
-                    ipOrigen);
-
-                return new TransaccionListItemDto
+                    _context.Transacciones.Add(transaccion);
+                    await _context.SaveChangesAsync();
+                    await dbTransaction.CommitAsync();
+                }
+                catch
                 {
-                    Id_Transaccion = transaccion.Id_Transaccion,
-                    Nombre_Planeta = publicacion.Planeta?.Nombre ?? "Desconocido",
-                    Nombre_Comprador = cliente.Nombre,
-                    Precio_Final = transaccion.Precio_Final,
-                    Fecha_Transaccion = transaccion.Fecha_Transaccion,
-                    Estado_Transaccion = transaccion.Estado_Transaccion,
-                    Metodo_Pago = transaccion.Metodo_Pago
-                };
+                    await dbTransaction.RollbackAsync();
+                    throw;
+                }
             }
-            catch
+
+            // Auditoría fuera de la transacción para no mezclar rollbacks
+            await RegistrarAuditoria(
+                null, "COMPRA_INICIADA", "transaccion",
+                transaccion.Id_Transaccion,
+                null,
+                JsonSerializer.Serialize(new { idPublicacion, idCliente, transaccion.Precio_Final }),
+                ipOrigen);
+
+            return new TransaccionListItemDto
             {
-                await dbTransaction.RollbackAsync();
-                throw;
-            }
+                Id_Transaccion = transaccion.Id_Transaccion,
+                Nombre_Planeta = publicacion.Planeta?.Nombre ?? "Desconocido",
+                Nombre_Comprador = cliente.Nombre,
+                Precio_Final = transaccion.Precio_Final,
+                Fecha_Transaccion = transaccion.Fecha_Transaccion,
+                Estado_Transaccion = transaccion.Estado_Transaccion,
+                Metodo_Pago = transaccion.Metodo_Pago
+            };
         }
 
         public async Task<TransaccionListItemDto> CambiarEstadoTransaccion(
             int idTransaccion, CambiarEstadoTransaccionDto dto, int idUsuario, string ipOrigen)
         {
-            var estadosValidos = new[] { "Completada", "Anulada", "EnDisputa" };
+            var estadosValidos = new[] { "Completada", "Anulada", "En Disputa" };
             if (!estadosValidos.Contains(dto.Estado))
                 throw new ArgumentException($"Estado inválido. Valores permitidos: {string.Join(", ", estadosValidos)}");
 
@@ -118,11 +134,11 @@ namespace Orbital.API.Services
 
             if (dto.Estado == "Completada")
             {
-                await CompletarTransaccionAtomicamente(transaccion, publicacion, dto.Notas);
+                await CompletarTransaccionAtomicamente(transaccion, publicacion, dto.Notas, idUsuario);
             }
             else
             {
-                // Anulada o EnDisputa
+                // Anulada o En Disputa
                 transaccion.Estado_Transaccion = dto.Estado;
                 if (dto.Notas != null) transaccion.Notas = dto.Notas;
 
@@ -169,9 +185,19 @@ namespace Orbital.API.Services
             };
         }
 
+        private const int EstadoVendidoId = 6;
+
         private async Task CompletarTransaccionAtomicamente(
-            Transaccion transaccion, MercadoPlaneta publicacion, string? notas)
+            Transaccion transaccion, MercadoPlaneta publicacion, string? notas, int idUsuario)
         {
+            var planeta = await _context.Planetas
+                .FirstOrDefaultAsync(p => p.Id_Planeta == publicacion.Id_Planeta);
+
+            if (planeta == null)
+                throw new KeyNotFoundException("Planeta asociado a la publicación no encontrado");
+
+            int estadoAnteriorId = planeta.Id_Estado;
+
             using var dbTransaction = await _context.Database.BeginTransactionAsync();
             try
             {
@@ -180,14 +206,22 @@ namespace Orbital.API.Services
                 if (notas != null) transaccion.Notas = notas;
                 _context.Transacciones.Update(transaccion);
 
-                // 2. Desactivar publicación (planeta vendido)
+                // 2. Marcar el planeta como Vendido y actualizar propietario
+                planeta.Id_Estado = EstadoVendidoId;
+                planeta.Id_Propietario = transaccion.Id_Comprador;
+                _context.Planetas.Update(planeta);
+
+                // 3. Desactivar la publicación
                 publicacion.Activo = false;
                 _context.MercadoPlanetas.Update(publicacion);
 
-                // 3. Registrar propietario anterior en histórico
+                // 4. Registrar en histórico con todas las columnas NOT NULL requeridas
                 var historico = new HistoricoCicloPlanetario
                 {
                     Id_Planeta = publicacion.Id_Planeta,
+                    Id_Estado_Anterior = estadoAnteriorId,
+                    Id_Estado_Nuevo = EstadoVendidoId,
+                    Id_Usuario_Cambio = idUsuario,
                     Id_Transaccion = transaccion.Id_Transaccion,
                     Id_Cliente_Nuevo = transaccion.Id_Comprador,
                     Tipo_Evento = "Venta",

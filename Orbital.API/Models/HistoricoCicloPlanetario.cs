@@ -14,6 +14,24 @@ namespace Orbital.API.Models
         [Required]
         public int Id_Planeta { get; set; }
 
+        [Column("id_estado_anterior")]
+        [Required]
+        public int Id_Estado_Anterior { get; set; }
+
+        [Column("id_estado_nuevo")]
+        [Required]
+        public int Id_Estado_Nuevo { get; set; }
+
+        [Column("id_usuario_cambio")]
+        [Required]
+        public int Id_Usuario_Cambio { get; set; }
+
+        [Column("id_cliente_externo")]
+        public int? Id_Cliente_Externo { get; set; }
+
+        [Column("motivo")]
+        public string? Motivo { get; set; }
+
         [Column("id_transaccion")]
         public int? Id_Transaccion { get; set; }
 
