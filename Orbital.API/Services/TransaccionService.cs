@@ -42,42 +42,51 @@ namespace Orbital.API.Services
                 throw new InvalidOperationException(
                     $"Crédito insuficiente. Disponible: {cliente.Credito_Disponible}, Requerido: {publicacion.Precio_Publicado}");
 
-            // Descontar crédito y crear transacción
-            cliente.Credito_Disponible -= publicacion.Precio_Publicado;
-            _context.Clientes.Update(cliente);
-
-            var transaccion = new Transaccion
+            using var dbTransaction = await _context.Database.BeginTransactionAsync();
+            try
             {
-                Id_Publicacion = idPublicacion,
-                Id_Comprador = idCliente,
-                Id_Vendedor = publicacion.Id_Publicado_Por,
-                Precio_Final = publicacion.Precio_Publicado,
-                Fecha_Transaccion = ahora,
-                Estado_Transaccion = "Pendiente",
-                Metodo_Pago = dto.Metodo_Pago,
-                Notas = dto.Notas
-            };
+                cliente.Credito_Disponible -= publicacion.Precio_Publicado;
+                _context.Clientes.Update(cliente);
 
-            _context.Transacciones.Add(transaccion);
-            await _context.SaveChangesAsync();
+                var transaccion = new Transaccion
+                {
+                    Id_Publicacion = idPublicacion,
+                    Id_Comprador = idCliente,
+                    Id_Vendedor = publicacion.Id_Publicado_Por,
+                    Precio_Final = publicacion.Precio_Publicado,
+                    Fecha_Transaccion = ahora,
+                    Estado_Transaccion = "Pendiente",
+                    Metodo_Pago = dto.Metodo_Pago,
+                    Notas = dto.Notas
+                };
 
-            await RegistrarAuditoria(
-                null, "COMPRA_INICIADA", "transaccion",
-                transaccion.Id_Transaccion,
-                null,
-                JsonSerializer.Serialize(new { idPublicacion, idCliente, transaccion.Precio_Final }),
-                ipOrigen);
+                _context.Transacciones.Add(transaccion);
+                await _context.SaveChangesAsync();
+                await dbTransaction.CommitAsync();
 
-            return new TransaccionListItemDto
+                await RegistrarAuditoria(
+                    null, "COMPRA_INICIADA", "transaccion",
+                    transaccion.Id_Transaccion,
+                    null,
+                    JsonSerializer.Serialize(new { idPublicacion, idCliente, transaccion.Precio_Final }),
+                    ipOrigen);
+
+                return new TransaccionListItemDto
+                {
+                    Id_Transaccion = transaccion.Id_Transaccion,
+                    Nombre_Planeta = publicacion.Planeta?.Nombre ?? "Desconocido",
+                    Nombre_Comprador = cliente.Nombre,
+                    Precio_Final = transaccion.Precio_Final,
+                    Fecha_Transaccion = transaccion.Fecha_Transaccion,
+                    Estado_Transaccion = transaccion.Estado_Transaccion,
+                    Metodo_Pago = transaccion.Metodo_Pago
+                };
+            }
+            catch
             {
-                Id_Transaccion = transaccion.Id_Transaccion,
-                Nombre_Planeta = publicacion.Planeta?.Nombre ?? "Desconocido",
-                Nombre_Comprador = cliente.Nombre,
-                Precio_Final = transaccion.Precio_Final,
-                Fecha_Transaccion = transaccion.Fecha_Transaccion,
-                Estado_Transaccion = transaccion.Estado_Transaccion,
-                Metodo_Pago = transaccion.Metodo_Pago
-            };
+                await dbTransaction.RollbackAsync();
+                throw;
+            }
         }
 
         public async Task<TransaccionListItemDto> CambiarEstadoTransaccion(
@@ -143,11 +152,16 @@ namespace Orbital.API.Services
                 dto.Estado,
                 ipOrigen);
 
+            var nombreComprador = await _context.Clientes
+                .Where(c => c.Id_Cliente == transaccion.Id_Comprador)
+                .Select(c => c.Nombre)
+                .FirstOrDefaultAsync() ?? transaccion.Id_Comprador.ToString();
+
             return new TransaccionListItemDto
             {
                 Id_Transaccion = transaccion.Id_Transaccion,
                 Nombre_Planeta = publicacion.Planeta?.Nombre ?? "Desconocido",
-                Nombre_Comprador = transaccion.Id_Comprador.ToString(),
+                Nombre_Comprador = nombreComprador,
                 Precio_Final = transaccion.Precio_Final,
                 Fecha_Transaccion = transaccion.Fecha_Transaccion,
                 Estado_Transaccion = transaccion.Estado_Transaccion,
@@ -199,14 +213,17 @@ namespace Orbital.API.Services
         public async Task<List<TransaccionListItemDto>> ListarTransacciones(
             string? estado, DateTime? fechaInicio, DateTime? fechaFin, int? idComprador)
         {
-            var query = _context.Transacciones
-                .Join(
-                    _context.MercadoPlanetas.Include(m => m.Planeta),
-                    t => t.Id_Publicacion,
-                    m => m.Id_Publicacion,
-                    (t, m) => new { Transaccion = t, Publicacion = m }
-                )
-                .AsQueryable();
+            var query = (
+                from t in _context.Transacciones
+                join m in _context.MercadoPlanetas on t.Id_Publicacion equals m.Id_Publicacion
+                join p in _context.Planetas on m.Id_Planeta equals p.Id_Planeta into planetaGroup
+                from planeta in planetaGroup.DefaultIfEmpty()
+                select new
+                {
+                    Transaccion = t,
+                    NombrePlaneta = planeta != null ? planeta.Nombre : "Desconocido"
+                }
+            ).AsQueryable();
 
             if (!string.IsNullOrEmpty(estado))
                 query = query.Where(x => x.Transaccion.Estado_Transaccion == estado);
@@ -224,7 +241,6 @@ namespace Orbital.API.Services
                 .OrderByDescending(x => x.Transaccion.Fecha_Transaccion)
                 .ToListAsync();
 
-            // Obtener nombres de compradores en un segundo query para evitar joins complejos
             var idCompradoresList = resultados.Select(x => x.Transaccion.Id_Comprador).Distinct().ToList();
             var compradores = await _context.Clientes
                 .Where(c => idCompradoresList.Contains(c.Id_Cliente))
@@ -233,7 +249,7 @@ namespace Orbital.API.Services
             return resultados.Select(x => new TransaccionListItemDto
             {
                 Id_Transaccion = x.Transaccion.Id_Transaccion,
-                Nombre_Planeta = x.Publicacion.Planeta?.Nombre ?? "Desconocido",
+                Nombre_Planeta = x.NombrePlaneta,
                 Nombre_Comprador = compradores.TryGetValue(x.Transaccion.Id_Comprador, out var nombre)
                     ? nombre : x.Transaccion.Id_Comprador.ToString(),
                 Precio_Final = x.Transaccion.Precio_Final,
