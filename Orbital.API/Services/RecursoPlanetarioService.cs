@@ -24,7 +24,7 @@ namespace Orbital.API.Services
 
         public async Task<RecursoPlanetarioResponseDto> Crear(RecursoPlanetarioCreateDto dto)
         {
-            var rp = new RecursoPlanetario
+            var rp = new RecursoPlaneta
             {
                 Id_Planeta = dto.Id_Planeta,
                 Id_Recurso = dto.Id_Recurso,
@@ -35,8 +35,6 @@ namespace Orbital.API.Services
             };
 
             var creado = await _repository.Crear(rp);
-
-            // Recargar con Include para tener los datos del recurso
             var conRecurso = await _repository.ObtenerPorId(creado.Id_Recurso_Planeta);
             return MapToDto(conRecurso!);
         }
@@ -79,7 +77,7 @@ namespace Orbital.API.Services
             return await _repository.Eliminar(id);
         }
 
-        private static RecursoPlanetarioResponseDto MapToDto(RecursoPlanetario rp)
+        private static RecursoPlanetarioResponseDto MapToDto(RecursoPlaneta rp)
         {
             return new RecursoPlanetarioResponseDto
             {

@@ -6,10 +6,10 @@ namespace Orbital.API.Repositories
 {
     public interface IRecursoPlanetarioRepository
     {
-        Task<RecursoPlanetario> Crear(RecursoPlanetario recursoPlanetario);
-        Task<List<RecursoPlanetario>> ObtenerPorPlaneta(int idPlaneta);
-        Task<RecursoPlanetario?> ObtenerPorId(int id);
-        Task<RecursoPlanetario> Actualizar(RecursoPlanetario recursoPlanetario);
+        Task<RecursoPlaneta> Crear(RecursoPlaneta recursoPlanetario);
+        Task<List<RecursoPlaneta>> ObtenerPorPlaneta(int idPlaneta);
+        Task<RecursoPlaneta?> ObtenerPorId(int id);
+        Task<RecursoPlaneta> Actualizar(RecursoPlaneta recursoPlanetario);
         Task<bool> Eliminar(int id);
     }
 
@@ -22,43 +22,43 @@ namespace Orbital.API.Repositories
             _context = context;
         }
 
-        public async Task<RecursoPlanetario> Crear(RecursoPlanetario recursoPlanetario)
+        public async Task<RecursoPlaneta> Crear(RecursoPlaneta recursoPlanetario)
         {
-            _context.RecursosPlanetarios.Add(recursoPlanetario);
+            _context.RecursosPlaneta.Add(recursoPlanetario);
             await _context.SaveChangesAsync();
             return recursoPlanetario;
         }
 
-        public async Task<List<RecursoPlanetario>> ObtenerPorPlaneta(int idPlaneta)
+        public async Task<List<RecursoPlaneta>> ObtenerPorPlaneta(int idPlaneta)
         {
-            return await _context.RecursosPlanetarios
+            return await _context.RecursosPlaneta
                 .Include(rp => rp.Recurso)
                 .Where(rp => rp.Id_Planeta == idPlaneta)
                 .ToListAsync();
         }
 
-        public async Task<RecursoPlanetario?> ObtenerPorId(int id)
+        public async Task<RecursoPlaneta?> ObtenerPorId(int id)
         {
-            return await _context.RecursosPlanetarios
+            return await _context.RecursosPlaneta
                 .Include(rp => rp.Recurso)
                 .FirstOrDefaultAsync(rp => rp.Id_Recurso_Planeta == id);
         }
 
-        public async Task<RecursoPlanetario> Actualizar(RecursoPlanetario recursoPlanetario)
+        public async Task<RecursoPlaneta> Actualizar(RecursoPlaneta recursoPlanetario)
         {
-            _context.RecursosPlanetarios.Update(recursoPlanetario);
+            _context.RecursosPlaneta.Update(recursoPlanetario);
             await _context.SaveChangesAsync();
             return recursoPlanetario;
         }
 
         public async Task<bool> Eliminar(int id)
         {
-            var rp = await _context.RecursosPlanetarios
+            var rp = await _context.RecursosPlaneta
                 .FirstOrDefaultAsync(rp => rp.Id_Recurso_Planeta == id);
 
             if (rp == null) return false;
 
-            _context.RecursosPlanetarios.Remove(rp);
+            _context.RecursosPlaneta.Remove(rp);
             await _context.SaveChangesAsync();
             return true;
         }

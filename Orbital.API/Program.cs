@@ -70,6 +70,12 @@ builder.Services.AddScoped<PlanetaEstadoService>();
 builder.Services.AddScoped<IValoracionService, ValoracionService>();
 builder.Services.AddScoped<IRecursoService, RecursoService>();
 builder.Services.AddScoped<IRecursoPlanetarioService, RecursoPlanetarioService>();
+// Mercado Interestelar
+builder.Services.AddScoped<IMercadoService, MercadoService>();
+builder.Services.AddScoped<ITransaccionService, TransaccionService>();
+builder.Services.AddScoped<IClienteService, ClienteService>();
+builder.Services.AddScoped<IClienteAuthService, ClienteAuthService>();
+builder.Services.AddScoped<IReporteService, ReporteService>();
 // Servicios
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -89,12 +95,9 @@ builder.Services.AddSwaggerGen(options => {
     });
 });
 
-
+builder.Services.AddCustomAuthorization();
 
 var app = builder.Build();
-
-//control de rutas
-builder.Services.AddCustomAuthorization();
 
 // Swagger
 if (app.Environment.IsDevelopment())

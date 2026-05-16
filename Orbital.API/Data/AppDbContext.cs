@@ -22,7 +22,6 @@ namespace Orbital.API.Data
         public DbSet<CoordenadasPlaneta> CoordenadasPlanetas { get; set; }
         public DbSet<PlanetaEstado> PlanetaEstados { get; set; }
         public DbSet<PlanetaValoracion> PlanetaValoraciones { get; set; }
-        public DbSet<RecursoPlanetario> RecursosPlanetarios { get; set; }
         public DbSet<MiembroEquipo> MiembrosEquipo { get; set; }
         public DbSet<Recurso> Recursos { get; set; }
         public DbSet<RecursoPlaneta> RecursosPlaneta { get; set; }
@@ -31,6 +30,8 @@ namespace Orbital.API.Data
         public DbSet<MercadoPlaneta> MercadoPlanetas { get; set; }
         public DbSet<AmenazaDeteccion> AmenazasDeteccion { get; set; }
         public DbSet<Transaccion> Transacciones { get; set; }
+        public DbSet<Cliente> Clientes { get; set; }
+        public DbSet<HistoricoCicloPlanetario> HistoricosCiclo { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -48,7 +49,6 @@ namespace Orbital.API.Data
             modelBuilder.Entity<CoordenadasPlaneta>().ToTable("coordenada_planeta");
             modelBuilder.Entity<PlanetaEstado>().ToTable("estado_planeta");
             modelBuilder.Entity<PlanetaValoracion>().ToTable("planeta_valoracion");
-            modelBuilder.Entity<RecursoPlanetario>().ToTable("recurso_planeta");
             modelBuilder.Entity<MiembroEquipo>().ToTable("miembro_equipo");
             modelBuilder.Entity<Recurso>().ToTable("recurso");
 
@@ -85,9 +85,6 @@ namespace Orbital.API.Data
             modelBuilder.Entity<PlanetaValoracion>()
                 .HasKey(x => x.Id_Valoracion);
 
-
-            modelBuilder.Entity<RecursoPlanetario>()
-            .HasKey(x => x.Id_Recurso_Planeta);
 
             modelBuilder.Entity<Recurso>()
                 .HasKey(x => x.Id_Recurso);
@@ -192,22 +189,90 @@ namespace Orbital.API.Data
                 .HasForeignKey(pv => pv.Aprobado_Por)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<RecursoPlanetario>()
-                .HasOne(rp => rp.Planeta)
-                .WithMany()
-                .HasForeignKey(rp => rp.Id_Planeta)
-                .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<MiembroEquipo>()
             .HasOne(m => m.Usuario)
             .WithMany()
             .HasForeignKey(m => m.Id_Usuario)
             .OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<RecursoPlanetario>()
-            .HasOne(rp => rp.Recurso)
-            .WithMany()
-            .HasForeignKey(rp => rp.Id_Recurso)
-            .OnDelete(DeleteBehavior.Restrict);
+            // =========================
+            // RELACIONES - Planeta → Galaxia
+            // =========================
+            modelBuilder.Entity<Planeta>()
+                .HasOne(p => p.GalaxiaNav)
+                .WithMany()
+                .HasForeignKey(p => p.Id_Galaxia)
+                .OnDelete(DeleteBehavior.Restrict);
 
+            // =========================
+            // RELACIONES - MercadoPlaneta
+            // =========================
+            modelBuilder.Entity<MercadoPlaneta>()
+                .HasOne(m => m.Planeta)
+                .WithMany()
+                .HasForeignKey(m => m.Id_Planeta)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<MercadoPlaneta>()
+                .HasOne(m => m.Valoracion)
+                .WithMany()
+                .HasForeignKey(m => m.Id_Valoracion)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // =========================
+            // RELACIONES - Cliente
+            // =========================
+            modelBuilder.Entity<Cliente>()
+                .HasKey(c => c.Id_Cliente);
+
+            modelBuilder.Entity<Cliente>()
+                .ToTable("cliente");
+
+            modelBuilder.Entity<Cliente>()
+                .HasIndex(c => c.Correo)
+                .IsUnique();
+
+            modelBuilder.Entity<Cliente>()
+                .Property(c => c.Correo)
+                .HasConversion(v => v.Trim().ToLower(), v => v);
+
+            modelBuilder.Entity<Cliente>()
+                .HasOne(c => c.GalaxiaOrigen)
+                .WithMany()
+                .HasForeignKey(c => c.Id_Galaxia_Origen)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // =========================
+            // RELACIONES - HistoricoCicloPlanetario
+            // =========================
+            modelBuilder.Entity<HistoricoCicloPlanetario>()
+                .HasKey(h => h.Id_Historico);
+
+            modelBuilder.Entity<HistoricoCicloPlanetario>()
+                .ToTable("historico_ciclo_planetario");
+
+            modelBuilder.Entity<HistoricoCicloPlanetario>()
+                .HasOne(h => h.Planeta)
+                .WithMany()
+                .HasForeignKey(h => h.Id_Planeta)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<HistoricoCicloPlanetario>()
+                .HasOne(h => h.Transaccion)
+                .WithMany()
+                .HasForeignKey(h => h.Id_Transaccion)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<HistoricoCicloPlanetario>()
+                .HasOne(h => h.ClienteAnterior)
+                .WithMany()
+                .HasForeignKey(h => h.Id_Cliente_Anterior)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<HistoricoCicloPlanetario>()
+                .HasOne(h => h.ClienteNuevo)
+                .WithMany()
+                .HasForeignKey(h => h.Id_Cliente_Nuevo)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // =========================
             // CONVERSIONES Y RESTRICCIONES

@@ -205,7 +205,65 @@ namespace Orbital.API.Authorization
                         RolesIds.Emperador,
                         RolesIds.Comandante,
                         RolesIds.SistemaScouter));
-                });
+
+                // =========================
+                // MERCADO INTERESTELAR
+                // =========================
+                options.AddPolicy(Policies.MercadoPublicar, policy =>
+                    policy.RequireClaim("Id_Rol",
+                        RolesIds.Emperador,
+                        RolesIds.Comandante,
+                        RolesIds.Gestor));
+
+                options.AddPolicy(Policies.MercadoEditar, policy =>
+                    policy.RequireClaim("Id_Rol",
+                        RolesIds.Emperador,
+                        RolesIds.Comandante,
+                        RolesIds.Gestor));
+
+                options.AddPolicy(Policies.MercadoRetirar, policy =>
+                    policy.RequireClaim("Id_Rol",
+                        RolesIds.Emperador,
+                        RolesIds.Comandante,
+                        RolesIds.Gestor));
+
+                // =========================
+                // TRANSACCIONES
+                // =========================
+                options.AddPolicy(Policies.TransaccionesLeer, policy =>
+                    policy.RequireClaim("Id_Rol",
+                        RolesIds.Emperador,
+                        RolesIds.Comandante,
+                        RolesIds.Gestor,
+                        RolesIds.Analista));
+
+                options.AddPolicy(Policies.TransaccionesGestionar, policy =>
+                    policy.RequireClaim("Id_Rol",
+                        RolesIds.Emperador,
+                        RolesIds.Comandante,
+                        RolesIds.Gestor));
+
+                // =========================
+                // CLIENTES (administración interna)
+                // =========================
+                options.AddPolicy(Policies.ClientesAdministrar, policy =>
+                    policy.RequireClaim("Id_Rol",
+                        RolesIds.Emperador,
+                        RolesIds.Comandante,
+                        RolesIds.Gestor));
+
+                // Política exclusiva para clientes externos (JWT con claim tipo=cliente)
+                options.AddPolicy(Policies.ClienteAutenticado, policy =>
+                    policy.RequireClaim("tipo", "cliente"));
+
+                // =========================
+                // REPORTES
+                // =========================
+                options.AddPolicy(Policies.ReportesLeer, policy =>
+                    policy.RequireClaim("Id_Rol",
+                        RolesIds.Emperador,
+                        RolesIds.Analista));
+            });
 
             return services;
         }

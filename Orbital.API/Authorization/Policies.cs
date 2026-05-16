@@ -38,5 +38,23 @@ namespace Orbital.API.Authorization
 
         // ROLES
         public const string RolesRead = "Roles.Read";
+
+        // =========================
+        // MERCADO INTERESTELAR
+        // =========================
+        public const string MercadoPublicar    = "Mercado.Publicar";
+        public const string MercadoEditar      = "Mercado.Editar";
+        public const string MercadoRetirar     = "Mercado.Retirar";
+
+        // TRANSACCIONES
+        public const string TransaccionesLeer      = "Transacciones.Leer";
+        public const string TransaccionesGestionar = "Transacciones.Gestionar";
+
+        // CLIENTES
+        public const string ClientesAdministrar = "Clientes.Administrar";
+        public const string ClienteAutenticado  = "Cliente.Autenticado";
+
+        // REPORTES
+        public const string ReportesLeer = "Reportes.Leer";
     }
 }

@@ -36,5 +36,11 @@ namespace Orbital.API.Models
 
         [Column("descripcion_venta")]
         public string? Descripcion_Venta { get; set; }
+
+        [ForeignKey("Id_Planeta")]
+        public Planeta? Planeta { get; set; }
+
+        [ForeignKey("Id_Valoracion")]
+        public PlanetaValoracion? Valoracion { get; set; }
     }
 }
