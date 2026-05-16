@@ -82,10 +82,6 @@ namespace Orbital.API.Data
             modelBuilder.Entity<PlanetaValoracion>()
                 .HasKey(x => x.Id_Valoracion);
 
-            modelBuilder.Entity<PlanetaValoracion>()
-                .HasKey(x => x.Id_Valoracion);
-
-
             modelBuilder.Entity<Recurso>()
                 .HasKey(x => x.Id_Recurso);
 
@@ -130,12 +126,6 @@ namespace Orbital.API.Data
                 .HasOne(p => p.Estado)
                 .WithMany()
                 .HasForeignKey(p => p.Id_Estado)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<PlanetaValoracion>()
-                .HasOne(pv => pv.Planeta)
-                .WithMany()
-                .HasForeignKey(p => p.Id_Planeta)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Planeta>()

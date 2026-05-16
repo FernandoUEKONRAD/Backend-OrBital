@@ -1,12 +1,11 @@
 using Orbital.API.DTOs;
 using Orbital.API.Models;
 using Orbital.API.Repositories;
-using System.Security.Cryptography;
-using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
+using System.Text;
 
 
 namespace Orbital.API.Services
@@ -29,9 +28,7 @@ namespace Orbital.API.Services
             if (usuario == null)
                 return null;
 
-            var hash = HashPassword(dto.Password);
-
-            if (usuario.Contrasena_Hash != hash)
+            if (!BCrypt.Net.BCrypt.Verify(dto.Password, usuario.Contrasena_Hash))
                 return null;
 
             var Key = GenerateJwtToken(usuario);
@@ -48,7 +45,7 @@ namespace Orbital.API.Services
             {
                 Nombre = dto.Nombre,
                 Correo = dto.Correo.ToLower(),
-                Contrasena_Hash = HashPassword(dto.Password),
+                Contrasena_Hash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
                 Id_Rol = dto.Id_Rol,
                 Id_Jerarquia = dto.Id_Jerarquia,
                 Activo = true,
@@ -58,14 +55,6 @@ namespace Orbital.API.Services
             await _repo.Crear(usuario);
 
             return usuario;
-        }
-
-        private string HashPassword(string password)
-        {
-            using var sha = SHA256.Create();
-            var bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(password));
-
-            return Convert.ToBase64String(bytes);
         }
 
         private string GenerateJwtToken(Usuario usuario)

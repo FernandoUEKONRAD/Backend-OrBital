@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace Orbital.API.Services
@@ -35,7 +34,7 @@ namespace Orbital.API.Services
 
             if (cliente == null) return null;
 
-            if (cliente.Contrasena_Hash != HashPassword(dto.Password)) return null;
+            if (!BCrypt.Net.BCrypt.Verify(dto.Password, cliente.Contrasena_Hash)) return null;
 
             return new ClienteLoginResponseDto
             {
@@ -59,7 +58,7 @@ namespace Orbital.API.Services
                 Tipo_Cliente = dto.Tipo_Cliente,
                 Id_Galaxia_Origen = dto.Id_Galaxia_Origen,
                 Correo = correo,
-                Contrasena_Hash = HashPassword(dto.Password),
+                Contrasena_Hash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
                 Credito_Disponible = 0,
                 Nivel_Confianza = "Nuevo",
                 Fecha_Registro = DateTime.Now,
@@ -115,11 +114,5 @@ namespace Orbital.API.Services
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        private static string HashPassword(string password)
-        {
-            using var sha = SHA256.Create();
-            var bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(password));
-            return Convert.ToBase64String(bytes);
-        }
     }
 }
