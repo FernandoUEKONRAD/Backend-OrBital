@@ -108,6 +108,84 @@ namespace Orbital.API.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task<List<UsuarioResponseDto>> ListarUsuarios(
+            string? nombre, bool? activo,
+            DateTime? fechaDesde, DateTime? fechaHasta,
+            int? jerarquiaId, string? letra,
+            int? nivelPoderMin, int? nivelPoderMax,
+            string? ordenarPor, bool desc)
+        {
+            var query = from u in _context.Usuarios
+                        join r in _context.Roles on u.Id_Rol equals r.Id_Rol
+                        join j in _context.Jerarquias on u.Id_Jerarquia equals j.Id_Jerarquia
+                        join me in _context.MiembrosEquipo.Where(m => m.Activo)
+                            on u.Id_Usuario equals me.Id_Usuario into miembros
+                        from miembro in miembros.DefaultIfEmpty()
+                        select new
+                        {
+                            u.Id_Usuario,
+                            u.Nombre,
+                            u.Correo,
+                            NombreRol = r.Nombre_Rol,
+                            NombreJerarquia = j.Nombre_Jerarquia,
+                            u.Activo,
+                            u.Fecha_Registro,
+                            u.Id_Jerarquia,
+                            NivelPoder = (int?)miembro.Nivel_Poder,
+                            j.Nivel_Poder_Minimo
+                        };
+
+            if (!string.IsNullOrEmpty(nombre))
+                query = query.Where(x => x.Nombre.Contains(nombre));
+
+            if (activo.HasValue)
+                query = query.Where(x => x.Activo == activo.Value);
+
+            if (fechaDesde.HasValue)
+                query = query.Where(x => x.Fecha_Registro >= fechaDesde.Value);
+
+            if (fechaHasta.HasValue)
+                query = query.Where(x => x.Fecha_Registro <= fechaHasta.Value);
+
+            if (jerarquiaId.HasValue)
+                query = query.Where(x => x.Id_Jerarquia == jerarquiaId.Value);
+
+            if (!string.IsNullOrEmpty(letra))
+                query = query.Where(x => x.Nombre.StartsWith(letra));
+
+            if (nivelPoderMin.HasValue)
+                query = query.Where(x => x.NivelPoder >= nivelPoderMin.Value);
+
+            if (nivelPoderMax.HasValue)
+                query = query.Where(x => x.NivelPoder <= nivelPoderMax.Value);
+
+            var ordenada = (ordenarPor?.ToLower(), desc) switch
+            {
+                ("fecha", false)       => query.OrderBy(x => x.Fecha_Registro),
+                ("fecha", true)        => query.OrderByDescending(x => x.Fecha_Registro),
+                ("nivel_poder", false) => query.OrderBy(x => x.NivelPoder),
+                ("nivel_poder", true)  => query.OrderByDescending(x => x.NivelPoder),
+                ("jerarquia", false)   => query.OrderBy(x => x.Nivel_Poder_Minimo),
+                ("jerarquia", true)    => query.OrderByDescending(x => x.Nivel_Poder_Minimo),
+                (_, false)             => query.OrderBy(x => x.Nombre),
+                (_, true)              => query.OrderByDescending(x => x.Nombre),
+            };
+
+            var resultado = await ordenada.ToListAsync();
+
+            return resultado.Select(x => new UsuarioResponseDto
+            {
+                Id_Usuario = x.Id_Usuario,
+                Nombre = x.Nombre,
+                Correo = x.Correo,
+                Rol = x.NombreRol,
+                Jerarquia = x.NombreJerarquia,
+                Activo = x.Activo,
+                Fecha_Registro = x.Fecha_Registro,
+                Nivel_Poder = x.NivelPoder
+            }).ToList();
+        }
+
         public async Task<Dictionary<string, List<UsuarioResponseDto>>> ObtenerUltimos3UsuariosPorRol()
         {
             var usuarios = await _context.Usuarios

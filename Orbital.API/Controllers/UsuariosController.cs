@@ -19,10 +19,30 @@ namespace Orbital.API.Controllers
 
         [Authorize(Policy = Policies.UsuariosRead)]
         [HttpGet]
-        public async Task<IActionResult> GetUsuarios()
+        public async Task<IActionResult> GetUsuarios(
+            [FromQuery] string? nombre,
+            [FromQuery] bool? activo,
+            [FromQuery] DateTime? fechaDesde,
+            [FromQuery] DateTime? fechaHasta,
+            [FromQuery] int? jerarquiaId,
+            [FromQuery] string? letra,
+            [FromQuery] int? nivelPoderMin,
+            [FromQuery] int? nivelPoderMax,
+            [FromQuery] string? ordenarPor,
+            [FromQuery] bool desc = false)
         {
-            var usuarios = await _service.GetUsuarios();
-            return Ok(usuarios);
+            var usuarios = await _service.ListarUsuarios(
+                nombre, activo, fechaDesde, fechaHasta,
+                jerarquiaId, letra, nivelPoderMin, nivelPoderMax,
+                ordenarPor, desc);
+
+            return Ok(new
+            {
+                message = "Usuarios obtenidos exitosamente",
+                cantidad = usuarios.Count,
+                filtros = new { nombre, activo, fechaDesde, fechaHasta, jerarquiaId, letra, nivelPoderMin, nivelPoderMax, ordenarPor, desc },
+                data = usuarios
+            });
         }
 
         [Authorize(Policy = Policies.UsuariosRead)]
